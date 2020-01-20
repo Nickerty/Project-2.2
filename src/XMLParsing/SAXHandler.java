@@ -9,19 +9,19 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class SAXHandler extends DefaultHandler {
 
-    private List<Weatherstation> weatherstations = null;
-    private Weatherstation weatherstation = null;
+    private List<XMLParsing.Weatherstation> weatherstations = null;
+    private XMLParsing.Weatherstation weatherstation = null;
     private String elementValue;
 
     @Override
     public void startDocument() throws SAXException {
-        weatherstations = new ArrayList<Weatherstation>();
+        weatherstations = new ArrayList<XMLParsing.Weatherstation>();
     }
 
     @Override
     public void startElement(String uri, String localname, String qName, Attributes attributes) throws SAXException {
         if (qName.equalsIgnoreCase("MEASUREMENT")) {
-            weatherstation = new Weatherstation();
+            weatherstation = new XMLParsing.Weatherstation();
         }
     }
 
@@ -32,6 +32,7 @@ public class SAXHandler extends DefaultHandler {
         }
         if (qName.equalsIgnoreCase("STN")) {
             weatherstation.setStn(Integer.valueOf(elementValue));
+            System.out.println(weatherstation.getStn());
         }
     }
 
@@ -40,7 +41,7 @@ public class SAXHandler extends DefaultHandler {
         elementValue = new String(ch, start, length);
     }
 
-    public List<Weatherstation> getWeatherstations() {
+    public List<XMLParsing.Weatherstation> getWeatherstations() {
         return weatherstations;
     }
 }

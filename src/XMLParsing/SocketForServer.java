@@ -17,16 +17,21 @@ public class SocketForServer {
             System.out.println(e);
             server = null;
         }
-
+        int i = 0;
         while (true) {
             try {
                 System.out.println("Waiting...");
                 Socket client = server.accept();
+                i++;
+
                 System.out.println("Connection established");
                 input = client.getInputStream();
-                while (true){
-                    new XMLReader(input);
-                }
+                XMLParsing.XMLReader xmlReader = new XMLParsing.XMLReader();
+                xmlReader.addData(input);
+                Thread worker = new Thread(xmlReader);
+                worker.start();
+
+                System.out.println(i + "BOEM JONGE");
             } catch (Exception e) {
                 System.out.println(e);
             }
