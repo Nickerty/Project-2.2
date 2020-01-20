@@ -7,6 +7,8 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import javax.xml.crypto.dom.*;
+
 public class SAXHandler extends DefaultHandler {
 
     private List<XMLParsing.Weatherstation> weatherstations = null;
@@ -27,12 +29,42 @@ public class SAXHandler extends DefaultHandler {
 
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
-        if (qName.equalsIgnoreCase("MEASUREMENT")) {
-            weatherstations.add(weatherstation);
+        try {
+            if (qName.equalsIgnoreCase("MEASUREMENT")) {
+                weatherstations.add(weatherstation);
+            } else if (qName.equalsIgnoreCase("STN")) {
+                weatherstation.setStn(Integer.valueOf(elementValue));
+            } else if (qName.equalsIgnoreCase("DATE")) {
+                weatherstation.setDate(elementValue);
+            } else if (qName.equalsIgnoreCase("TIME")) {
+                weatherstation.setTime(elementValue);
+            } else if (qName.equalsIgnoreCase("TEMP")) {
+                weatherstation.setTemperature(Double.valueOf(elementValue));
+            } else if (qName.equalsIgnoreCase("DEWP")) {
+                weatherstation.setDewpoint(Double.valueOf(elementValue));
+            } else if (qName.equalsIgnoreCase("STP")) {
+                weatherstation.setAirPressureStationLevel(Double.valueOf(elementValue));
+            } else if (qName.equalsIgnoreCase("SLP")) {
+                weatherstation.setAirPressureSeaLevel(Double.valueOf(elementValue));
+            } else if (qName.equalsIgnoreCase("VISIB")) {
+                weatherstation.setVisibility(Double.valueOf(elementValue));
+            } else if (qName.equalsIgnoreCase("WDSP")) {
+                weatherstation.setWindSpeed(Double.valueOf(elementValue));
+            } else if (qName.equalsIgnoreCase("PRCP")) {
+                weatherstation.setRainfall(Double.valueOf(elementValue));
+            } else if (qName.equalsIgnoreCase("SNDP")) {
+                weatherstation.setSnowfall(Double.valueOf(elementValue));
+            } else if (qName.equalsIgnoreCase("FRSHTT")) {
+                weatherstation.setFRSHTT(elementValue);
+            } else if (qName.equalsIgnoreCase("CLDC")) {
+                weatherstation.setCloudy(Double.valueOf(elementValue));
+            } else if (qName.equalsIgnoreCase("WNDDIR")) {
+                weatherstation.setWindDirection(Short.valueOf(elementValue));
+            }
+            System.out.println(getWeatherstations());
         }
-        if (qName.equalsIgnoreCase("STN")) {
-            weatherstation.setStn(Integer.valueOf(elementValue));
-            System.out.println(weatherstation.getStn());
+        catch (NumberFormatException e){
+            System.out.println("Value missing");
         }
     }
 

@@ -3,57 +3,130 @@ package XMLParsing;
 public class Weatherstation {
 
     private int stn;
-    private String name;
-    private String country;
-    private double latitude;
-    private double longitude;
-    private double elevation;
+    private String date;                    //YYYY-MM-DD
+    private String time;                    //HH:MM:SS
+    private double temperature;             //1 decimal
+    private double dewpoint;                //1 decimal
+    private double airPressureStationLevel; //1 decimal
+    private double airPressureSeaLevel;     //1 decimal
+    private double visibility;              //1 decimal
+    private double windSpeed;               //1 decimal
+    private double rainfall;                //2 decimals
+    private double snowfall;                //1 decimal
+    private String FRSHTT;                  //Freezing, Rain, Snow, Hail, Thunderstorm, Tornado
+    private double cloudy;                  //1 decimal
+    private short windDirection;            //0 decimals
 
-    public int getStn(){
-        return stn;
-    }
 
-    public void setStn(int stn){
+    public void setStn(int stn) {
         this.stn = stn;
     }
 
-    public String getName(){
-        return name;
+    public void setDate(String date) {
+        this.date = date;
     }
 
-    public void setName(String name){
-        this.name = name;
+    public void setTime(String time) {
+        this.time = time;
     }
 
-    public String getCountry(){
-        return country;
+    public void setTemperature(double temperature) {
+        this.temperature = temperature;
     }
 
-    public void setCountry(String country){
-        this.country = country;
+    public void setDewpoint(double dewpoint) {
+        this.dewpoint = dewpoint;
     }
 
-    public double getLatitude(){
-        return latitude;
+    public void setAirPressureStationLevel(double airPressureStationLevel) {
+        this.airPressureStationLevel = airPressureStationLevel;
     }
 
-    public void setLatitude(double latitude){
-        this.latitude =latitude;
+    public void setAirPressureSeaLevel(double airPressureSeaLevel) {
+        this.airPressureSeaLevel = airPressureSeaLevel;
     }
 
-    public double getLongitude(){
-        return longitude;
+    public void setVisibility(double visibility) {
+        this.visibility = visibility;
     }
 
-    public void setLongitude(double longitude){
-        this.longitude = longitude;
+    public void setWindSpeed(double windSpeed) {
+        this.windSpeed = windSpeed;
     }
 
-    public double getElevation(){
-        return elevation;
+    public void setRainfall(double rainfall) {
+        this.rainfall = rainfall;
     }
 
-    public void setElevation(double elevation){
-        this.elevation = elevation;
+    public void setSnowfall(double snowfall) {
+        this.snowfall = snowfall;
+    }
+
+    public void setFRSHTT(String FRSHTT) {
+        this.FRSHTT = FRSHTT;
+    }
+
+    public void setCloudy(double cloudy) {
+        this.cloudy = cloudy;
+    }
+
+    public void setWindDirection(short windDirection) {
+        this.windDirection = windDirection;
+    }
+
+    public int getStn() {
+        return stn;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public double getTemperature() {
+        return temperature;
+    }
+
+    public double getDewpoint() {
+        return dewpoint;
+    }
+
+    public double getAirPressureStationLevel() {
+        return airPressureStationLevel;
+    }
+
+    public double getAirPressureSeaLevel() {
+        return airPressureSeaLevel;
+    }
+
+    public double getVisibility() {
+        return visibility;
+    }
+
+    public double getWindSpeed() {
+        return windSpeed;
+    }
+
+    public double getRainfall() {
+        return rainfall;
+    }
+
+    public double getSnowfall() {
+        return snowfall;
+    }
+
+    public String getFRSHTT() {
+        return FRSHTT;
+    }
+
+    public double getCloudy() {
+        return cloudy;
+    }
+
+    public short getWindDirection() {
+        return windDirection;
     }
 }
