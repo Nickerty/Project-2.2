@@ -12,14 +12,26 @@ import javax.xml.crypto.dom.*;
 
 public class SAXHandler extends DefaultHandler {
 
-    private List<Weatherstation> weatherstations = null;
+    private List<Weatherstation> weatherstations = new ArrayList<Weatherstation>();
     private Weatherstation weatherstation = null;
     private WeatherMeasurement weatherMeasurement = null;
     private String elementValue;
+    private int timeTillPrint = 10;
+    private int timeTillPrintCounter = 1;
     @Override
     public void startDocument() throws SAXException {
-        weatherstations = new ArrayList<Weatherstation>();
     }
+
+    @Override
+    public void endDocument() throws SAXException {
+        if(timeTillPrintCounter >= timeTillPrint) {
+            String json = new Gson().toJson(weatherstations);
+            System.out.println(json);
+            timeTillPrintCounter = 1;
+        }
+        timeTillPrintCounter++;
+    }
+
 
     @Override
     public void startElement(String uri, String localname, String qName, Attributes attributes) throws SAXException {
@@ -33,7 +45,7 @@ public class SAXHandler extends DefaultHandler {
     public void endElement(String uri, String localName, String qName) throws SAXException {
         try {
             if (qName.equalsIgnoreCase("MEASUREMENT")) {
-                 weatherstation.addWeatherMeasurement(weatherMeasurement);
+                weatherstation.addWeatherMeasurement(weatherMeasurement);
             } else if (qName.equalsIgnoreCase("STN")) {
                 int stn = (Integer.valueOf(elementValue));
                 boolean exists = false;
@@ -80,12 +92,12 @@ public class SAXHandler extends DefaultHandler {
             } else if (qName.equalsIgnoreCase("WNDDIR")) {
                 weatherMeasurement.setWindDirection(Short.valueOf(elementValue));
             }
-            for (WeatherMeasurement weatherMeasurement:
-                    weatherstation.getWeatherMeasurements()) {
-                //System.out.println("ding: " +weatherMeasurement.getStn() + "andere ding:" + weatherstation.stn);
-                String json = new Gson().toJson(weatherstations);
-                System.out.println(json);
-            }
+//            for (WeatherMeasurement weatherMeasurement:
+//                    weatherstation.getWeatherMeasurements()) {
+//                //System.out.println("ding: " +weatherMeasurement.getStn() + "andere ding:" + weatherstation.stn);
+//
+//                System.out.println(json);
+//            }
         }
         catch (NumberFormatException e){
             //System.out.println("Value missing");
@@ -101,32 +113,3 @@ public class SAXHandler extends DefaultHandler {
         return weatherstations;
     }
 }
-
-//        String date = attributes.getValue("DATE");
-//        String time = attributes.getValue("TIME");
-//        String dew_point = attributes.getValue("DEWP");
-//        String air_pressure_station = attributes.getValue("STP");
-//        String air_pressure_zee = attributes.getValue("SLP");
-//        String visibility = attributes.getValue("VISIB");
-//        String windspeed = attributes.getValue("WDSP");
-//        String rain_amount = attributes.getValue("PRCP");
-//        String snow_amount = attributes.getValue("SNDP");
-//        String binary_value = attributes.getValue("FRSHTT");
-//        String clouds = attributes.getValue("CLDC");
-//        String wind_direction = attributes.getValue("WNDDIR");
-
-//    public SAXHandler(String filename){
-//        String path = new File(filename).getAbsolutePath();
-//        convertToFileURL(path);
-//    }
-//
-//    public String convertToFileURL(String path){
-//        if(File.separatorChar != '/'){
-//            path = path.replace(File.separatorChar, '/');
-//        }
-//
-//        if(!path.startsWith("/")){
-//            path = "/" + path;
-//        }
-//        return "file:" + path;
-//    }

@@ -12,7 +12,7 @@ public class SocketForServer {
         try {
             server = new ServerSocket(port);
         } catch (Exception e) {
-            System.out.println(e);
+            //System.out.println(e);
             server = null;
         }
         int i = 0;

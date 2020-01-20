@@ -20,7 +20,6 @@ public class Weatherstation {
 
     public void addWeatherMeasurement(WeatherMeasurement item) {
         weatherMeasurements.add(item);
-        System.out.println("gedaan");
     }
 
     public ArrayList<WeatherMeasurement> getWeatherMeasurements() {

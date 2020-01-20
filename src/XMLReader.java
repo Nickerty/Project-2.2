@@ -24,7 +24,6 @@ public class XMLReader implements Runnable {
         {
             SAXParserFactory factory = SAXParserFactory.newInstance();
             SAXParser saxParser = factory.newSAXParser();
-
             SAXHandler saxHandler = new SAXHandler();
 
             while(true) {
