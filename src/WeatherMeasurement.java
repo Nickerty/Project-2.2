@@ -1,7 +1,5 @@
-package XMLParsing;
 
-public class Weatherstation {
-
+public class WeatherMeasurement {
     private int stn;
     private String date;                    //YYYY-MM-DD
     private String time;                    //HH:MM:SS

@@ -1,5 +1,3 @@
-package XMLParsing;
-
 import java.io.*;
 import javax.xml.parsers.*;
 import java.net.ServerSocket;
@@ -22,16 +20,16 @@ public class SocketForServer {
             try {
                 System.out.println("Waiting...");
                 Socket client = server.accept();
+                System.out.println("Accepted");
                 i++;
 
-                System.out.println("Connection established");
+
                 input = client.getInputStream();
-                XMLParsing.XMLReader xmlReader = new XMLParsing.XMLReader();
+                XMLReader xmlReader = new XMLReader();
                 xmlReader.addData(input);
                 Thread worker = new Thread(xmlReader);
                 worker.start();
-
-                System.out.println(i + "BOEM JONGE");
+                System.out.println("Connection established");
             } catch (Exception e) {
                 System.out.println(e);
             }

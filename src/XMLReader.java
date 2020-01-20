@@ -1,4 +1,4 @@
-package XMLParsing;
+
 
 import java.io.*;
 import java.util.List;
@@ -25,7 +25,7 @@ public class XMLReader implements Runnable {
             SAXParserFactory factory = SAXParserFactory.newInstance();
             SAXParser saxParser = factory.newSAXParser();
 
-            XMLParsing.SAXHandler saxHandler = new XMLParsing.SAXHandler();
+            SAXHandler saxHandler = new SAXHandler();
 
             while(true) {
                 StringBuilder stringBuilder = new StringBuilder();
