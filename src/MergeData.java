@@ -13,23 +13,50 @@ public class MergeData implements Runnable {
     @Override
     public void run() {
         while(true){
-            System.out.println(this.temp);
-            try{
-                Thread.sleep(10000);
-            }
-            catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
     }
 
     public synchronized void addData(ArrayList<Weatherstation> data){
-        weatherstations.addAll(data);
+
+        if(weatherstations.size() == 0) {
+            weatherstations.addAll(data);
+        } else {
+            for (Weatherstation dataSingle : data) {
+                ArrayList<WeatherMeasurement> measurementList = dataSingle.getWeatherMeasurements();
+                for (WeatherMeasurement measurementListItem : measurementList) {
+                    boolean isGefixt = false;
+                    boolean stop = false;
+                    int meaurmentId = measurementListItem.getStn();
+                    for (Weatherstation weatherstation : weatherstations) {
+                        if (weatherstation.stn == meaurmentId) {
+                            ArrayList<WeatherMeasurement> weatherMeasurementArrayList = weatherstation.getWeatherMeasurements();
+                            for (WeatherMeasurement singleWeatherMeasurement :weatherMeasurementArrayList) {
+                                if(singleWeatherMeasurement.getTime() == measurementListItem.getTime()) {
+                                    stop = true;
+                                }
+                            }
+                            if(!stop) {
+                                weatherstation.addWeatherMeasurement(measurementListItem);
+                            }
+                            isGefixt = true;
+                        }
+                    }
+                    if(isGefixt) {
+                        System.out.println("Nice");
+                    } else {
+                        Weatherstation newWeatherStation = new Weatherstation(meaurmentId);
+                        newWeatherStation.addWeatherMeasurement(measurementListItem);
+                        weatherstations.add(newWeatherStation);
+                    }
+                }
+            }
+        }
+        printIt();
     }
 
-    public String printIt(){
+    public void printIt(){
             String data = new Gson().toJson(weatherstations);
-            return data;
+            System.out.println(data);
     }
 
 
