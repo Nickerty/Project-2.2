@@ -29,17 +29,18 @@ public class SAXHandler extends DefaultHandler {
 
     @Override
     public void startDocument() throws SAXException {
+//         weatherstations = new ArrayList<Weatherstation>();
     }
 
     @Override
     public void endDocument() throws SAXException {
-        if(timeTillPrintCounter >= timeTillPrint) {
-            json = new Gson().toJson(weatherstations);  //Makes JSON file from ArrayList (TEST PURPOSES)
-            mergeData.addData(weatherstations);         //Merges all the data into one JSON file
-            //System.out.println(json);                 //Print JSON file from above (TEST PURPOSES)
-            timeTillPrintCounter = 1;                   //Counter for call to print and merge
-        }
-        timeTillPrintCounter++;
+//        if(timeTillPrintCounter >= timeTillPrint) {
+//            json = new Gson().toJson(weatherstations);  //Makes JSON file from ArrayList (TEST PURPOSES)
+//            mergeData.printIt();                        //Print JSON file from above (TEST PURPOSES)
+//            timeTillPrintCounter = 1;                   //Counter for call to print and merge
+//        }
+//        timeTillPrintCounter++;
+        mergeData.adjustData("Add", weatherstations);         //Merges all the data into one JSON file
     }
 
 
