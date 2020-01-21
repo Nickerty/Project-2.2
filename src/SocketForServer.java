@@ -16,6 +16,9 @@ public class SocketForServer {
             server = null;
         }
         int i = 0;
+        MergeData mergeData = new MergeData();
+        Thread merger = new Thread(mergeData);
+        merger.start();
         while (true) {
             try {
                 System.out.println("Waiting...");
@@ -25,7 +28,7 @@ public class SocketForServer {
 
 
                 input = client.getInputStream();
-                XMLReader xmlReader = new XMLReader();
+                XMLReader xmlReader = new XMLReader(merger, mergeData);
                 xmlReader.addData(input);
                 Thread worker = new Thread(xmlReader);
                 worker.start();

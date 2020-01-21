@@ -12,12 +12,21 @@ import javax.xml.crypto.dom.*;
 
 public class SAXHandler extends DefaultHandler {
 
-    private List<Weatherstation> weatherstations = new ArrayList<Weatherstation>();
+    private ArrayList<Weatherstation> weatherstations = new ArrayList<Weatherstation>();
     private Weatherstation weatherstation = null;
     private WeatherMeasurement weatherMeasurement = null;
     private String elementValue;
+    String json = null;
     private int timeTillPrint = 10;
     private int timeTillPrintCounter = 1;
+    private Thread merger;
+    private MergeData mergeData;
+
+    public SAXHandler(Thread merger, MergeData mergeData) {
+        this.merger = merger;
+        this.mergeData = mergeData;
+    }
+
     @Override
     public void startDocument() throws SAXException {
     }
@@ -25,8 +34,10 @@ public class SAXHandler extends DefaultHandler {
     @Override
     public void endDocument() throws SAXException {
         if(timeTillPrintCounter >= timeTillPrint) {
-            String json = new Gson().toJson(weatherstations);
-            System.out.println(json);
+            json = new Gson().toJson(weatherstations);
+            mergeData.addData(weatherstations);
+            //System.out.println(json);
+            //System.out.println(mergeData.printIt());
             timeTillPrintCounter = 1;
         }
         timeTillPrintCounter++;
@@ -111,5 +122,9 @@ public class SAXHandler extends DefaultHandler {
 
     public List<Weatherstation> getWeatherstations() {
         return weatherstations;
+    }
+
+    public String getJson() {
+        return json;
     }
 }
