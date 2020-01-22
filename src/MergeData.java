@@ -5,13 +5,14 @@ import java.util.*;
 public class MergeData implements Runnable {
 
     int temp = 0;
-    private ArrayList<Weatherstation> newData;
-    private HashMap<Integer, Weatherstation> weatherstationById;
-    private ArrayList<Weatherstation> tempData;
+    private volatile ArrayList<Weatherstation> newData;
+    private volatile HashMap<Integer, Weatherstation> weatherstationById;
+    private volatile ArrayList<Weatherstation> tempData;
 
     public MergeData() {
         newData = new ArrayList<Weatherstation>();
         weatherstationById = new HashMap<Integer, Weatherstation>();
+        tempData = new ArrayList<Weatherstation>();
     }
 
     @Override
@@ -19,9 +20,8 @@ public class MergeData implements Runnable {
         while (true) {
 //            System.out.println(getData());  //FOR SOME REASON THE PROGRAM AT THIS POINT ALWAYS THINKS THAT THE VARIABLE: newData is empty.
             if (!getData().isEmpty()) {
-                System.out.println("Working");
-                adjustData("Clear", this.newData);
-                for (Weatherstation dataSingle : tempData) {                                                       //For every Weatherstation in the new data:
+                adjustData("Clear", getData());
+                for (Weatherstation dataSingle : getTempData()) {                                                       //For every Weatherstation in the new data:
                     ArrayList<WeatherMeasurement> measurementList = dataSingle.getWeatherMeasurements();       //Make list for all Measurements of the selected Weatherstation
                     for (WeatherMeasurement measurementListItem : measurementList) {                           //Loop trough all the weather measurements:
                         boolean isGefixt = false;                                                              //Variable to keep track if there is already a weatherstation saved which belongs to the currently receiving measurment
@@ -61,7 +61,7 @@ public class MergeData implements Runnable {
             //System.out.println(this.data.isEmpty());
         }
         else if(value.equals("Clear")){
-            this.tempData = data;
+            this.tempData.addAll(data);
             this.newData.clear();
         }
         else{
@@ -80,10 +80,14 @@ public class MergeData implements Runnable {
 
     public void printIt(){
             String data = new Gson().toJson(weatherstationById);
-            System.out.println(data);
+            System.out.println("Current data: "+data);
     }
 
     public ArrayList<Weatherstation> getData() {
         return this.newData;
+    }
+
+    public ArrayList<Weatherstation> getTempData() {
+        return this.tempData;
     }
 }
