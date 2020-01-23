@@ -1,3 +1,4 @@
+import java.util.*;
 
 public class WeatherMeasurement {
     private int stn;
@@ -14,7 +15,6 @@ public class WeatherMeasurement {
     private String FRSHTT;                  //Freezing, Rain, Snow, Hail, Thunderstorm, Tornado
     private double cloudy;                  //1 decimal
     private short windDirection;            //0 decimals
-
 
     public void setStn(int stn) {
         this.stn = stn;

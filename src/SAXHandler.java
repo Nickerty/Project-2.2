@@ -45,6 +45,7 @@ public class SAXHandler extends DefaultHandler {
     public void endElement(String uri, String localName, String qName) throws SAXException {
         try {
             if (qName.equalsIgnoreCase("MEASUREMENT")) {
+                weatherMeasurement.makeList();
                 weatherstation.addWeatherMeasurement(weatherMeasurement);
             } else if (qName.equalsIgnoreCase("STN")) {
                 int stn = (Integer.valueOf(elementValue));
