@@ -15,8 +15,13 @@ import org.xml.sax.SAXException;
 
 public class XMLReader implements Runnable {
     private InputStream data;
+    private Thread merger;
+    private MergeData mergeData;
 
-
+    public XMLReader(Thread merger, MergeData mergeData) {
+        this.merger = merger;
+        this.mergeData = mergeData;
+    }
 
     @Override
     public void run() {
@@ -24,7 +29,7 @@ public class XMLReader implements Runnable {
         {
             SAXParserFactory factory = SAXParserFactory.newInstance();
             SAXParser saxParser = factory.newSAXParser();
-            SAXHandler saxHandler = new SAXHandler();
+            SAXHandler saxHandler = new SAXHandler(merger, mergeData);
 
             while(true) {
                 StringBuilder stringBuilder = new StringBuilder();
