@@ -1,18 +1,18 @@
 import com.google.gson.*;
-
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.io.IOException;
 import java.util.*;
 
 public class MergeData implements Runnable {
 
     int temp = 0;
-    private volatile ArrayList<Weatherstation> newData;
     private volatile HashMap<Integer, Weatherstation> weatherstationById;
-    private volatile ArrayList<Weatherstation> tempData;
+    private volatile HashMap<Integer, Weatherstation> tempData;
 
     public MergeData() {
-        newData = new ArrayList<Weatherstation>();
         weatherstationById = new HashMap<Integer, Weatherstation>();
-        tempData = new ArrayList<Weatherstation>();
+        tempData = new HashMap<Integer, Weatherstation>();
     }
 
     @Override
@@ -21,7 +21,9 @@ public class MergeData implements Runnable {
 //            System.out.println(getData());  //FOR SOME REASON THE PROGRAM AT THIS POINT ALWAYS THINKS THAT THE VARIABLE: newData is empty.
             if (!getData().isEmpty()) {
                 adjustData("Clear", getData());
-                for (Weatherstation dataSingle : getTempData()) {                                                       //For every Weatherstation in the new data:
+                ArrayList<Weatherstation> tempData = new ArrayList<>(getTempData().values());
+
+                for (Weatherstation dataSingle : tempData) {                                                       //For every Weatherstation in the new data:
                     ArrayList<WeatherMeasurement> measurementList = dataSingle.getWeatherMeasurements();       //Make list for all Measurements of the selected Weatherstation
                     for (WeatherMeasurement measurementListItem : measurementList) {                           //Loop trough all the weather measurements:
                         boolean isGefixt = false;                                                              //Variable to keep track if there is already a weatherstation saved which belongs to the currently receiving measurment
@@ -45,24 +47,23 @@ public class MergeData implements Runnable {
                             Weatherstation newWeatherStation = new Weatherstation(measurementId);              //A new weatherstation would be made
                             newWeatherStation.addWeatherMeasurement(measurementListItem);                      //The corresponding measurement will linked to it
                             insertData(measurementId, newWeatherStation);
-                            System.out.println("First/Duplicate measure");
+                            //System.out.println("First/Duplicate measure");
                         }
                     }
                 }
-                tempData.clear();
-                printIt();          //Print for checking is everything is working.
+                writeToJsonFIle();        //Print for checking is everything is working.
             }
         }
     }
 
-    public synchronized void adjustData(String value, ArrayList<Weatherstation> data) {
+    public synchronized void adjustData(String value, HashMap<Integer, Weatherstation> data) {
         if(value.equals("Add")){
-            this.newData.addAll(data);
+            this.weatherstationById.putAll(data);
             //System.out.println(this.data.isEmpty());
         }
         else if(value.equals("Clear")){
-            this.tempData.addAll(data);
-            this.newData.clear();
+            this.tempData.putAll(data);
+            this.weatherstationById.clear();
         }
         else{
             System.out.println("Something went wrong, please contact the programmer");
@@ -79,15 +80,33 @@ public class MergeData implements Runnable {
     }
 
     public void printIt(){
-            String data = new Gson().toJson(weatherstationById);
+            HashMap<Integer, Weatherstation> copyPasteWeatherStations = weatherstationById;
+            ArrayList<Weatherstation> copyPasteWeatherStationsList = new ArrayList<Weatherstation>(copyPasteWeatherStations.values());
+            String data = new Gson().toJson(copyPasteWeatherStationsList);
             System.out.println("Current data: "+data);
     }
 
-    public ArrayList<Weatherstation> getData() {
-        return this.newData;
+    public HashMap<Integer, Weatherstation> getData() {
+        return this.weatherstationById;
     }
 
-    public ArrayList<Weatherstation> getTempData() {
+    public HashMap<Integer, Weatherstation> getTempData() {
         return this.tempData;
+    }
+
+    public void writeToJsonFIle() {
+
+        try {
+            PrintWriter writer = new PrintWriter("ding.json", "UTF-8");
+            HashMap<Integer, Weatherstation> copyPasteWeatherStations = weatherstationById;
+            ArrayList<Weatherstation> copyPasteWeatherStationsList = new ArrayList<Weatherstation>(copyPasteWeatherStations.values());
+            String data = new Gson().toJson(copyPasteWeatherStationsList);
+            System.out.println(data);
+            writer.println(data);
+            writer.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
     }
 }

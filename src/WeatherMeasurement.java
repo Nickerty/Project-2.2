@@ -14,7 +14,7 @@ public class WeatherMeasurement {
     private double snowfall;                //1 decimal
     private String FRSHTT;                  //Freezing, Rain, Snow, Hail, Thunderstorm, Tornado
     private double cloudy;                  //1 decimal
-    private short windDirection;            //0 decimals
+    private double windDirection;            //0 decimals
 
     public void setStn(int stn) {
         this.stn = stn;
@@ -68,7 +68,7 @@ public class WeatherMeasurement {
         this.cloudy = cloudy;
     }
 
-    public void setWindDirection(short windDirection) {
+    public void setWindDirection(double windDirection) {
         this.windDirection = windDirection;
     }
 
@@ -124,7 +124,7 @@ public class WeatherMeasurement {
         return cloudy;
     }
 
-    public short getWindDirection() {
+    public double getWindDirection() {
         return windDirection;
     }
 }

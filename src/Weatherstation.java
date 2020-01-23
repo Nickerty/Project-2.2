@@ -25,4 +25,6 @@ public class Weatherstation {
     public ArrayList<WeatherMeasurement> getWeatherMeasurements() {
         return weatherMeasurements;
     }
+
+    public ArrayList<WeatherMeasurement> getSpecificNumberOfWeatherMeasurements(int aantal) { return (ArrayList<WeatherMeasurement>) weatherMeasurements.subList(weatherMeasurements.size()-(1+aantal), weatherMeasurements.size()-1);}
 }
