@@ -4,7 +4,21 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import org.xml.sax.*;
 
+/**
+ * The SocketForServer class is a class which will make as many sockets as there are clients who are willing to connect.
+ * Once a client makes a connection with this class (Server), this class will make a Thread for it and start the
+ * data processing phase by letting the Thread handle a new instance of XMLReader.
+ *
+ * @author Matthijs van der Wal, Anne de Graaff, Nick Scholma
+ * @version 1.0
+ * @since 24-1-2020
+ */
 public class SocketForServer {
+
+    /**
+     * Method which will run as soon as the program starts. It will wait for the first client to arrive and than it
+     * will take actions accordingly.
+     */
     public static void main(String args[]){
         int port = 7789;                //Port for connection (server-client)
         ServerSocket server;

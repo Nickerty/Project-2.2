@@ -14,9 +14,9 @@ import javax.xml.crypto.dom.*;
  * weather-stations in the document in variables. It also corrects missing data and erroneous temperature values
  * using methods from the DataCorrection class.
  *
- * @author ??
- * @version ??
- * @since ??
+ * @author Matthijs van der Wal, Anne de Graaff, Nick Scholma
+ * @version 1.0
+ * @since 24-1-2020
  */
 public class SAXHandler extends DefaultHandler {
 
@@ -34,8 +34,8 @@ public class SAXHandler extends DefaultHandler {
 
     /**
      * Constructor for the SAXHandler class
-     * @param merger ??
-     * @param mergeData ??
+     * @param merger Thread for merging of the data
+     * @param mergeData Instance of the class MergeData which is run by the thread: merger.
      */
     public SAXHandler(Thread merger, MergeData mergeData) {
         this.merger = merger;
@@ -44,7 +44,7 @@ public class SAXHandler extends DefaultHandler {
 
     /**
      * Method which initialises the correctData field as an empty ArrayList
-     * @throws SAXException ??
+     * @throws SAXException When something goes wrong during the parsing process a SAXException will be thrown
      */
     @Override
     public void startDocument() throws SAXException {
@@ -54,7 +54,7 @@ public class SAXHandler extends DefaultHandler {
 
     /**
      * Method which merges all the data into one JSON file.
-     * @throws SAXException ??
+     * @throws SAXException When something goes wrong during the pasing process a SAXException well be thrown
      */
     @Override
     public void endDocument() throws SAXException {
@@ -69,11 +69,11 @@ public class SAXHandler extends DefaultHandler {
 
     /**
      * Method which defines the element where the SAX handler will begin to parse.
-     * @param uri ??
-     * @param localname ??
-     * @param qName ??
-     * @param attributes ??
-     * @throws SAXException ??
+     * @param uri Universal resource identifier
+     * @param localname Local name
+     * @param qName Qualified name
+     * @param attributes Attributes attached to the element
+     * @throws SAXException When something goes wrong during the pasing process a SAXException well be thrown
      */
     @Override
     public void startElement(String uri, String localname, String qName, Attributes attributes) throws SAXException {
@@ -86,9 +86,9 @@ public class SAXHandler extends DefaultHandler {
     /**
      * Method which defines the element where the SAX handler will end it's parsing, and which also runs the datacorrection
      * methods on the collected data.
-     * @param uri ??
-     * @param localName ??
-     * @param qName ??
+     * @param uri Universal resource identifier
+     * @param localName Local name
+     * @param qName Qualified name
      */
     @Override
     public void endElement(String uri, String localName, String qName) {
@@ -348,10 +348,10 @@ public class SAXHandler extends DefaultHandler {
 
     /**
      * ????
-     * @param ch ??
-     * @param  ??
-     * @param length ??
-     * @throws SAXException ??
+     * @param ch List of characters
+     * @param start The start position in the character array
+     * @param length The number of characters to use from the character array
+     * @throws SAXException When something goes wrong during the pasing process a SAXException well be thrown
      */
     @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
@@ -366,11 +366,11 @@ public class SAXHandler extends DefaultHandler {
         return weatherstations;
     }
 
-    /**
-     * Getter for the json field.
-     * @return A string containing ??
-     */
-    public String getJson() {
-        return json;
-    }
+//    /**
+//     * Getter for the json field.
+//     * @return A string containing weather data
+//     */
+//    public String getJson() {
+//        return json;
+//    }
 }
