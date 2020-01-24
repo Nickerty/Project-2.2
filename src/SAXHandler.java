@@ -1,5 +1,3 @@
-
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +9,15 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import javax.xml.crypto.dom.*;
 
+/**
+ * The SaxHandler class parses through the given XML document using a SAX handler and stores the data from the
+ * weather-stations in the document in variables. It also corrects missing data and erroneous temperature values
+ * using methods from the DataCorrection class.
+ *
+ * @author ??
+ * @version ??
+ * @since ??
+ */
 public class SAXHandler extends DefaultHandler {
 
     private HashMap<Integer, Weatherstation> weatherstations = new HashMap<Integer, Weatherstation>();
@@ -18,24 +25,37 @@ public class SAXHandler extends DefaultHandler {
     private WeatherMeasurement weatherMeasurement = null;
     private ArrayList<Boolean> correctData = null;
     private String elementValue;
-    String json = null;
+    String json = null; //TODO Private toevoegen?
     private int timeTillPrint = 10;
     private int timeTillPrintCounter = 1;
     private Thread merger;
     private MergeData mergeData;
     private DataCorrection dataCorrection = new DataCorrection();
 
+    /**
+     * Constructor for the SAXHandler class
+     * @param merger ??
+     * @param mergeData ??
+     */
     public SAXHandler(Thread merger, MergeData mergeData) {
         this.merger = merger;
         this.mergeData = mergeData;
     }
 
+    /**
+     * Method which initialises the correctData field as an empty ArrayList
+     * @throws SAXException ??
+     */
     @Override
     public void startDocument() throws SAXException {
 //         weatherstations = new ArrayList<Weatherstation>();
-        correctData = new ArrayList<>();
+        correctData = new ArrayList<>(); //TODO Is deze hele methode niet iets voor in de constructor?
     }
 
+    /**
+     * Method which merges all the data into one JSON file.
+     * @throws SAXException ??
+     */
     @Override
     public void endDocument() throws SAXException {
 //        if(timeTillPrintCounter >= timeTillPrint) {
@@ -47,7 +67,14 @@ public class SAXHandler extends DefaultHandler {
         mergeData.adjustData("Add", weatherstations);         //Merges all the data into one JSON file
     }
 
-
+    /**
+     * Method which defines the element where the SAX handler will begin to parse.
+     * @param uri ??
+     * @param localname ??
+     * @param qName ??
+     * @param attributes ??
+     * @throws SAXException ??
+     */
     @Override
     public void startElement(String uri, String localname, String qName, Attributes attributes) throws SAXException {
 //        if (qName.equalsIgnoreCase("MEASUREMENT")) {
@@ -56,6 +83,13 @@ public class SAXHandler extends DefaultHandler {
 
     }
 
+    /**
+     * Method which defines the element where the SAX handler will end it's parsing, and which also runs the datacorrection
+     * methods on the collected data.
+     * @param uri ??
+     * @param localName ??
+     * @param qName ??
+     */
     @Override
     public void endElement(String uri, String localName, String qName) {
         try {
@@ -64,7 +98,7 @@ public class SAXHandler extends DefaultHandler {
                 weatherstation.addWeatherMeasurement(weatherMeasurement);
             } else if (qName.equalsIgnoreCase("STN")) {
                 int stn = (Integer.valueOf(elementValue));
-                boolean exists = false;
+                boolean exists = false; //TODO de boolean exists wordt niet meer gebruikt?
                 Weatherstation existingWeatherStation = null;
                 if (weatherstations.containsKey(stn)) {
                     exists = true;
@@ -80,7 +114,7 @@ public class SAXHandler extends DefaultHandler {
                 int aantal = 0;
                 ArrayList<WeatherMeasurement> allMeasurements = weatherstations.get(stn).getSpecificNumberOfWeatherMeasurements(30);
                 for (Boolean correctDataSingle : correctData) {
-                    switch(aantal) {
+                    switch(aantal) { //In this switch the data correction method is run on values if they are empty
                         case 0:
                             //TEMP
                             if (!correctDataSingle) {
@@ -312,15 +346,30 @@ public class SAXHandler extends DefaultHandler {
     }
 
 
+    /**
+     * ????
+     * @param ch ??
+     * @param  ??
+     * @param length ??
+     * @throws SAXException ??
+     */
     @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
         elementValue = new String(ch, start, length);
     }
 
+    /**
+     * Getter for the weatherstations field.
+     * @return a Hashmap containing all known weatherstations, mapped by their ID.
+     */
     public HashMap<Integer, Weatherstation> getWeatherstations() {
         return weatherstations;
     }
 
+    /**
+     * Getter for the json field.
+     * @return A string containing ??
+     */
     public String getJson() {
         return json;
     }
