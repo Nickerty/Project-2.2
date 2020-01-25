@@ -59,6 +59,7 @@ public class XMLReader implements Runnable {
                 }
                 InputSource saxInputSource = new InputSource(new StringReader(stringBuilder.toString()));
                 saxParser.parse(saxInputSource, saxHandler);
+
             }
             //
 //                System.out.println(stringBuilder);

@@ -20,14 +20,14 @@ import javax.xml.crypto.dom.*;
  */
 public class SAXHandler extends DefaultHandler {
 
-    private HashMap<Integer, Weatherstation> weatherstations = new HashMap<Integer, Weatherstation>();
+    private HashMap<Integer, Weatherstation> weatherstations = new HashMap<Integer, Weatherstation>();;
     private Weatherstation weatherstation = null;
     private WeatherMeasurement weatherMeasurement = null;
     private ArrayList<Boolean> correctData = null;
     private String elementValue;
     String json = null; //TODO Private toevoegen?
     private int timeTillPrint = 10;
-    private int timeTillPrintCounter = 1;
+    private int timeTillPrintCounter = 0;
     private Thread merger;
     private MergeData mergeData;
     private DataCorrection dataCorrection = new DataCorrection();
@@ -48,8 +48,7 @@ public class SAXHandler extends DefaultHandler {
      */
     @Override
     public void startDocument() throws SAXException {
-//         weatherstations = new ArrayList<Weatherstation>();
-        correctData = new ArrayList<>(); //TODO Is deze hele methode niet iets voor in de constructor?
+        correctData = new ArrayList<>();
     }
 
     /**
@@ -58,13 +57,19 @@ public class SAXHandler extends DefaultHandler {
      */
     @Override
     public void endDocument() throws SAXException {
-//        if(timeTillPrintCounter >= timeTillPrint) {
+//
 //            json = new Gson().toJson(weatherstations);  //Makes JSON file from ArrayList (TEST PURPOSES)
 //            mergeData.printIt();                        //Print JSON file from above (TEST PURPOSES)
 //            timeTillPrintCounter = 1;                   //Counter for call to print and merge
 //        }
 //        timeTillPrintCounter++;
-        mergeData.adjustData("Add", weatherstations);         //Merges all the data into one JSON file
+        if(timeTillPrintCounter >= timeTillPrint) {
+            mergeData.adjustData("Add", weatherstations);         //Merges all the data into one JSON file
+            weatherstations.clear();
+            timeTillPrintCounter = 0;
+        }
+        timeTillPrintCounter++;
+
     }
 
     /**
@@ -235,9 +240,7 @@ public class SAXHandler extends DefaultHandler {
                     }
                     aantal++;
                 }
-                for (WeatherMeasurement weatherMeasurement : weatherstation.getWeatherMeasurements()) {
 
-                }
 
             } else if (qName.equalsIgnoreCase("DATE")) {
                 weatherMeasurement.setDate(elementValue);                   //Set the Date variable of the weatherMeasurement to the corresponding one.

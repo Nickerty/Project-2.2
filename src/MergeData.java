@@ -19,7 +19,8 @@ public class MergeData implements Runnable {
     int temp = 0;
     private volatile HashMap<Integer, Weatherstation> weatherstationById;
     private volatile HashMap<Integer, Weatherstation> tempData;
-
+    private int amountOfData = 0;
+    private int fileNumber = 0;
     /**
      * Constructor for the MergeData class
      */
@@ -34,11 +35,9 @@ public class MergeData implements Runnable {
     @Override
     public void run() {
         while (true) {
-            if (!getData().isEmpty()) {                                                                        //Checks if there is any data ready to get merged
-                adjustData("Clear", getData());                                                          //Puts all the data in temporary list to work with, makes the source list empty
-                ArrayList<Weatherstation> tempData = new ArrayList<>(getTempData().values());                  //Converts Hashmap into Arraylist
-
-                for (Weatherstation dataSingle : tempData) {                                                   //For every Weatherstation in the new data:
+                                                                 //Checks if there is any data ready to get merged
+//                adjustData("Clear", getData());                                                          //Puts all the data in temporary list to work with, makes the source list empty
+                for (Weatherstation dataSingle : weatherstationById.values()) {                                                   //For every Weatherstation in the new data:
                     ArrayList<WeatherMeasurement> measurementList = dataSingle.getWeatherMeasurements();       //Make list for all Measurements of the selected Weatherstation
                     for (WeatherMeasurement measurementListItem : measurementList) {                           //Loop trough all the weather measurements:
                         boolean isGefixt = false;                                                              //Variable to keep track if there is already a weatherstation saved which belongs to the currently receiving measurment
@@ -54,22 +53,21 @@ public class MergeData implements Runnable {
                             }
                             if (!stop) {                                                                    //Checks if the currently receiving measurement is not a duplicate.
                                 weatherstation.addWeatherMeasurement(measurementListItem);                 //Adds measurement to the correct station.
-                                mergeData(measurementId, weatherstation);
+                                weatherstationById.replace(measurementId, weatherstation);
+                                System.out.println(weatherstation.getWeatherMeasurements().size());
                             }
                             isGefixt = true;                                                               //Variable to keep track if there is already a weatherstation saved which belongs to the currently receiving measurment
                         }
                         if (!isGefixt) {                                                                         //Checks if all measurements where allocated to the corresponding weatherstation, if not:
                             Weatherstation newWeatherStation = new Weatherstation(measurementId);              //A new weatherstation would be made
                             newWeatherStation.addWeatherMeasurement(measurementListItem);                      //The corresponding measurement will linked to it
-                            insertData(measurementId, newWeatherStation);
+                            weatherstationById.put(measurementId, newWeatherStation);               //Add data to a specific ID in the Hashmap
                             //System.out.println("First/Duplicate measure");
                         }
                     }
                 }
-                writeToJsonFIle();        //Print for checking is everything is working.
             }
         }
-    }
 
     /**
      * Method for adjusting the hashmap: weatherstationById
@@ -79,11 +77,16 @@ public class MergeData implements Runnable {
     public synchronized void adjustData(String value, HashMap<Integer, Weatherstation> data) {
         if(value.equals("Add")){
             this.weatherstationById.putAll(data);               //Adds all received data to existing Hashmap
+            amountOfData++;
+            if(amountOfData >= 800)  {
+                writeToJsonFIle();
+                amountOfData = 0;
+            }
         }
-        else if(value.equals("Clear")){
-            this.tempData.putAll(data);                         //Adds all known data to temporary Hashmap
-            this.weatherstationById.clear();                    //Clears the Hashmap with data which has to be merged
-        }
+//        else if(value.equals("Clear")){
+//            this.tempData.putAll(data);                         //Adds all known data to temporary Hashmap
+//            this.weatherstationById.clear();                    //Clears the Hashmap with data which has to be merged
+//        }
         else{
             System.out.println("Something went wrong, please contact the programmer");
         }
@@ -95,18 +98,16 @@ public class MergeData implements Runnable {
      * @param measurementId ID for tell the method which weatherstation it has to deal with, same as STN of a weatherstation
      * @param newWeatherStation A Weatherstation which needs to be linked to the corresponding ID
      */
-    public synchronized void insertData(int measurementId, Weatherstation newWeatherStation){
-        weatherstationById.put(measurementId, newWeatherStation);               //Add data to a specific ID in the Hashmap
-    }
+
 
     /**
      * Method to replace the old data which was linked to an ID with new data
      * @param measurementId ID for tell the method which weatherstation it has to deal with, same as STN of a weatherstation
      * @param newWeatherStation A Weatherstation which needs to be linked to the corresponding ID
      */
-    public synchronized void mergeData(int measurementId, Weatherstation newWeatherStation){
-        weatherstationById.replace(measurementId, newWeatherStation);           //Replaces a existing weatherstation with a new one
-    }
+//    public synchronized void mergeData(int measurementId, Weatherstation newWeatherStation){
+//        //Replaces a existing weatherstation with a new one
+//    }
 
 //    public void printIt(){
 //            HashMap<Integer, Weatherstation> copyPasteWeatherStations = weatherstationById;
@@ -119,9 +120,6 @@ public class MergeData implements Runnable {
      * Method for getting the HashMap weatherstationById
      * @return Hashmap of the newly achieved data
      */
-    public HashMap<Integer, Weatherstation> getData() {
-        return this.weatherstationById;
-    }
 
     /**
      * Method for getting the HashMap tempData
@@ -137,13 +135,14 @@ public class MergeData implements Runnable {
     public void writeToJsonFIle() {
 
         try {
-            PrintWriter writer = new PrintWriter("ding.json", "UTF-8");
-            HashMap<Integer, Weatherstation> copyPasteWeatherStations = weatherstationById;
-            ArrayList<Weatherstation> copyPasteWeatherStationsList = new ArrayList<Weatherstation>(copyPasteWeatherStations.values());
-            String data = new Gson().toJson(copyPasteWeatherStationsList);
-            System.out.println(data);
+            System.out.println("Wrting to file: ding"+fileNumber+".json");
+            PrintWriter writer = new PrintWriter("ding"+fileNumber+".json", "UTF-8");
+            String data = new Gson().toJson(weatherstationById);
             writer.println(data);
             writer.close();
+//            weatherstationById = new HashMap<Integer, Weatherstation>();
+            tempData = new HashMap<Integer, Weatherstation>();
+            fileNumber++;
         } catch (Exception e) {
             System.out.println(e);
         }

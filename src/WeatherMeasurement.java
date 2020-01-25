@@ -13,17 +13,17 @@ public class WeatherMeasurement {
     private int stn;
     private String date;                    //YYYY-MM-DD
     private String time;                    //HH:MM:SS
-    private double temperature;             //1 decimal
-    private double dewpoint;                //1 decimal
-    private double airPressureStationLevel; //1 decimal
-    private double airPressureSeaLevel;     //1 decimal
-    private double visibility;              //1 decimal
-    private double windSpeed;               //1 decimal
-    private double rainfall;                //2 decimals
-    private double snowfall;                //1 decimal
+    private double temp;             //1 decimal
+    private double dew;                //1 decimal
+    private double aPSL; //1 decimal
+    private double aPSeL;     //1 decimal
+    private double vis;              //1 decimal
+    private double wiSp;               //1 decimal
+    private double rf;                //2 decimals
+    private double sf;                //1 decimal
     private String FRSHTT;                  //Freezing, Rain, Snow, Hail, Thunderstorm, Tornado
-    private double cloudy;                  //1 decimal
-    private double windDirection;            //0 decimals
+    private double c;                  //1 decimal
+    private double wD;            //0 decimals
 
     /**
      * Setter for the stationID field
@@ -51,66 +51,66 @@ public class WeatherMeasurement {
 
     /**
      * Setter for the temperature field
-     * @param temperature Temperature value which belongs to this measurement
+     * @param temp Temperature value which belongs to this measurement
      */
-    public void setTemperature(double temperature) {
-        this.temperature = temperature;
+    public void setTemperature(double temp) {
+        this.temp = temp;
     }
 
     /**
      * Setter for the dewpoint field
-     * @param dewpoint Dewpoint value which belongs to this measurement
+     * @param dew Dewpoint value which belongs to this measurement
      */
-    public void setDewpoint(double dewpoint) {
-        this.dewpoint = dewpoint;
+    public void setDewpoint(double dew) {
+        this.dew = dew;
     }
 
     /**
      * Setter for the air pressure at station level field
-     * @param airPressureStationLevel Air pressure at station level value which belongs to this measurement
+     * @param aPSL Air pressure at station level value which belongs to this measurement
      */
-    public void setAirPressureStationLevel(double airPressureStationLevel) {
-        this.airPressureStationLevel = airPressureStationLevel;
+    public void setAirPressureStationLevel(double aPSL) {
+        this.aPSL = aPSL;
     }
 
     /**
      * Setter for the air pressure at sea level field
-     * @param airPressureSeaLevel Air pressure at sea level value which belongs to this measurement
+     * @param aPSeL Air pressure at sea level value which belongs to this measurement
      */
-    public void setAirPressureSeaLevel(double airPressureSeaLevel) {
-        this.airPressureSeaLevel = airPressureSeaLevel;
+    public void setAirPressureSeaLevel(double aPSeL) {
+        this.aPSeL = aPSeL;
     }
 
     /**
      * Setter for the visibility field
-     * @param visibility Visibility value which belongs to this measurement
+     * @param vis Visibility value which belongs to this measurement
      */
-    public void setVisibility(double visibility) {
-        this.visibility = visibility;
+    public void setVisibility(double vis) {
+        this.vis = vis;
     }
 
     /**
      * Setter for the wind speed field
-     * @param windSpeed Wind speed value which belongs to this measurement
+     * @param wiSp Wind speed value which belongs to this measurement
      */
-    public void setWindSpeed(double windSpeed) {
-        this.windSpeed = windSpeed;
+    public void setWindSpeed(double wiSp) {
+        this.wiSp = wiSp;
     }
 
     /**
      * Setter for the rainfall field
-     * @param rainfall Rainfall value which belongs to this measurement
+     * @param rf Rainfall value which belongs to this measurement
      */
-    public void setRainfall(double rainfall) {
-        this.rainfall = rainfall;
+    public void setRainfall(double rf) {
+        this.rf = rf;
     }
 
     /**
      * Setter for the snowfall field
-     * @param snowfall snowfall value which belongs to this measurement
+     * @param sf snowfall value which belongs to this measurement
      */
-    public void setSnowfall(double snowfall) {
-        this.snowfall = snowfall;
+    public void setSnowfall(double sf) {
+        this.sf = sf;
     }
 
     /**
@@ -123,18 +123,18 @@ public class WeatherMeasurement {
 
     /**
      * Setter for the cloudy field
-     * @param cloudy Cloudy value which belongs to this measurement
+     * @param c Cloudy value which belongs to this measurement
      */
-    public void setCloudy(double cloudy) {
-        this.cloudy = cloudy;
+    public void setCloudy(double c) {
+        this.c = c;
     }
 
     /**
      * Setter for the wind direction field
-     * @param windDirection Wind direction value which belongs to this measurement
+     * @param wD Wind direction value which belongs to this measurement
      */
-    public void setWindDirection(double windDirection) {
-        this.windDirection = windDirection;
+    public void setWindDirection(double wD) {
+        this.wD = wD;
     }
 
     /**
@@ -166,7 +166,7 @@ public class WeatherMeasurement {
      * @return Temperature value which belongs to this measurement
      */
     public double getTemperature() {
-        return temperature;
+        return temp;
     }
 
     /**
@@ -174,7 +174,7 @@ public class WeatherMeasurement {
      * @return Dewpoint value which belongs to this measurement
      */
     public double getDewpoint() {
-        return dewpoint;
+        return dew;
     }
 
     /**
@@ -182,7 +182,7 @@ public class WeatherMeasurement {
      * @return Air pressure at station level value which belongs to this measurement
      */
     public double getAirPressureStationLevel() {
-        return airPressureStationLevel;
+        return aPSL;
     }
 
     /**
@@ -190,7 +190,7 @@ public class WeatherMeasurement {
      * @return Air pressure at sea level value which belongs to this measurement
      */
     public double getAirPressureSeaLevel() {
-        return airPressureSeaLevel;
+        return aPSeL;
     }
 
     /**
@@ -198,7 +198,7 @@ public class WeatherMeasurement {
      * @return visibility value which belongs to this measurement
      */
     public double getVisibility() {
-        return visibility;
+        return vis;
     }
 
     /**
@@ -206,7 +206,7 @@ public class WeatherMeasurement {
      * @return Wind speed value which belongs to this measurement
      */
     public double getWindSpeed() {
-        return windSpeed;
+        return wiSp;
     }
 
     /**
@@ -214,7 +214,7 @@ public class WeatherMeasurement {
      * @return Rainfall value which belongs to this measurement
      */
     public double getRainfall() {
-        return rainfall;
+        return rf;
     }
 
     /**
@@ -222,7 +222,7 @@ public class WeatherMeasurement {
      * @return Snowfall value which belongs to this measurement
      */
     public double getSnowfall() {
-        return snowfall;
+        return sf;
     }
 
     /**
@@ -238,7 +238,7 @@ public class WeatherMeasurement {
      * @return Cloudy value which belongs to this measurement
      */
     public double getCloudy() {
-        return cloudy;
+        return c;
     }
 
     /**
@@ -246,6 +246,6 @@ public class WeatherMeasurement {
      * @return Wind direction value which belongs to this measurement
      */
     public double getWindDirection() {
-        return windDirection;
+        return wD;
     }
 }
