@@ -26,9 +26,7 @@ public class SAXHandler extends DefaultHandler {
     private ArrayList<Boolean> correctData = null;
     private String elementValue;
     String json = null; //TODO Private toevoegen?
-    private int timeTillPrint = 10;
-    private int timeTillPrintCounter = 0;
-    private Thread merger;
+
     private MergeData mergeData;
     private DataCorrection dataCorrection = new DataCorrection();
 
@@ -37,8 +35,7 @@ public class SAXHandler extends DefaultHandler {
      * @param merger Thread for merging of the data
      * @param mergeData Instance of the class MergeData which is run by the thread: merger.
      */
-    public SAXHandler(Thread merger, MergeData mergeData) {
-        this.merger = merger;
+    public SAXHandler(MergeData mergeData) {
         this.mergeData = mergeData;
     }
 
@@ -63,13 +60,8 @@ public class SAXHandler extends DefaultHandler {
 //            timeTillPrintCounter = 1;                   //Counter for call to print and merge
 //        }
 //        timeTillPrintCounter++;
-        if(timeTillPrintCounter >= timeTillPrint) {
-            mergeData.adjustData("Add", weatherstations);         //Merges all the data into one JSON file
-            weatherstations.clear();
-            timeTillPrintCounter = 0;
-        }
-        timeTillPrintCounter++;
-
+        mergeData.adjustData("Add", weatherstations);         //Merges all the data into one JSON file
+        weatherstations.clear();
     }
 
     /**

@@ -1,6 +1,7 @@
 
 
 import java.io.*;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.xml.*;
@@ -8,6 +9,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.sql.SQLXML;
+import java.util.concurrent.TimeUnit;
 
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -22,16 +24,13 @@ import org.xml.sax.SAXException;
  */
 public class XMLReader implements Runnable {
     private InputStream data;
-    private Thread merger;
     private MergeData mergeData;
 
     /**
      * Constructor for the XMLReader class
-     * @param merger Thread for merging of the data
-     * @param mergeData Instance of the class MergeData which is run by the thread: merger.
+     * @param mergeData Instance of the class MergeData
      */
-    public XMLReader(Thread merger, MergeData mergeData) {
-        this.merger = merger;
+    public XMLReader(MergeData mergeData) {
         this.mergeData = mergeData;
     }
 
@@ -44,22 +43,25 @@ public class XMLReader implements Runnable {
         {
             SAXParserFactory factory = SAXParserFactory.newInstance();
             SAXParser saxParser = factory.newSAXParser();
-            SAXHandler saxHandler = new SAXHandler(merger, mergeData);
+            SAXHandler saxHandler = new SAXHandler(mergeData);
+            StringBuilder stringBuilder = new StringBuilder();
 
             while(true) {
-                StringBuilder stringBuilder = new StringBuilder();
                 String rowLines = null;
                 String line = null;
 
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(data, "UTF-8"));
                 line = bufferedReader.readLine();
+                stringBuilder.append(line);
                 while (!line.equals("</WEATHERDATA>")) {
                     line = bufferedReader.readLine();
                     stringBuilder.append(line);
                 }
                 InputSource saxInputSource = new InputSource(new StringReader(stringBuilder.toString()));
                 saxParser.parse(saxInputSource, saxHandler);
+                stringBuilder = new StringBuilder();
 
+                TimeUnit.MILLISECONDS.sleep(900);
             }
             //
 //                System.out.println(stringBuilder);
