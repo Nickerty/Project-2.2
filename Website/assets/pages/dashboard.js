@@ -122,11 +122,8 @@ var options = {
   }, {
       name: 'Temperature (C)',
       data: [11, 32, 60, 32, 34]
-  },{
-      name: 'Windspeed',
-      data: [11, 32, 60, 32, 42]
   }],
-  colors: ['#4090cb', '#e74c5e', "#29cb1c"],
+  colors: ['#4090cb', '#e74c5e'],
 
   grid: {
     yaxis: {
@@ -181,7 +178,7 @@ var options = {
     labels: {
       rotate: -90
     },
-    categories: ['Dag1', 'Dag2', 'Dag3', 'Dag4', 'Dag5', 'Dag6', 'Dag7']
+    categories: ['Day1', 'Day2', 'Day3', 'Day4', 'Day5', 'Day6', 'Day7']
   },
   colors: ['#e74c5e'],
 
