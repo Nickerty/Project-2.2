@@ -27,7 +27,6 @@ public class SAXHandler extends DefaultHandler {
 
     /**
      * Constructor for the SAXHandler class
-     * @param merger Thread for merging of the data
      * @param mergeData Instance of the class MergeData which is run by the thread: merger.
      */
     public SAXHandler(MergeData mergeData) {

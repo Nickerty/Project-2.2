@@ -33,6 +33,7 @@ public class MergeData implements Runnable {
      */
     @Override
     public void run() {
+        this.tempData.putAll(this.weatherstationById);
         while (!tempData.isEmpty()) {
 //Checks if there is any data ready to get merged
 //                adjustData("Clear", getData());                                                          //Puts all the data in temporary list to work with, makes the source list empty
@@ -46,7 +47,7 @@ public class MergeData implements Runnable {
                             Weatherstation weatherstation = tempData.get(measurementId);             //Get the already received measurements from a particular weatherstation
                             ArrayList<WeatherMeasurement> weatherMeasurementArrayList = weatherstation.getWeatherMeasurements();
                             for (WeatherMeasurement singleWeatherMeasurement : weatherMeasurementArrayList) {                        //Loop trough all the measurements of a particular weatherstation
-                                if (singleWeatherMeasurement.getTime() == measurementListItem.getTime()) {                           //Check if the time of arrival is the same as the currently receiving measurement:
+                                if (singleWeatherMeasurement.getTime().equals(measurementListItem.getTime())) {                           //Check if the time of arrival is the same as the currently receiving measurement:
                                     stop = true;                                                                                    //Because this means this is a duplicate of a measurement it not need to be saved.
                                 }
                             }
@@ -70,13 +71,11 @@ public class MergeData implements Runnable {
 
     /**
      * Method for adjusting the hashmap: weatherstationById
-     * @param value A string to tell the method what to do. Two options are: Add & Clear
      * @param data The data which the method needs to do something with
      */
     public synchronized void adjustData(HashMap<Integer, Weatherstation> data) {
             this.weatherstationById.putAll(data);               //Adds all received data to existing Hashmap
             amountOfData++;
-            this.tempData.putAll(this.weatherstationById);
 
             if(amountOfData > 800) {
                 //writeToJsonFIle();
@@ -105,7 +104,7 @@ public class MergeData implements Runnable {
     /**
      * Method for making a final JSON file which need to be send to the Virtual Machine
      */
-    public void writeToJsonFIle() {
+    public synchronized void writeToJsonFIle() {
 
         try {
             System.out.println("Wrting to file: ding"+fileNumber+".json");
@@ -115,7 +114,7 @@ public class MergeData implements Runnable {
             writer.close();
             tempData.clear();
             fileNumber++;
-        } catch (Exception e) {
+        } catch(FileNotFoundException | UnsupportedEncodingException e) {
             System.out.println(e);
         }
 

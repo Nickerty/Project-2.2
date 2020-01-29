@@ -30,7 +30,7 @@ public class SocketForServer {
             Thread worker = new Thread(mergeData);
             worker.start();
             while (true) {
-                System.out.println(connection);
+//                System.out.println(connection);
                 System.out.println("Waiting...");
                 Socket client;
                 try {
@@ -43,7 +43,7 @@ public class SocketForServer {
 //                    } catch (Exception es) {
 //                        System.out.println("WTF");
 //                    }
-                    System.out.println("Socket timeout");
+//                    System.out.println("Socket timeout");
                 } catch (Exception se) {
                     client = null;
                     System.out.println("Other exception");

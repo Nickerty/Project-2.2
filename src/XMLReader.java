@@ -66,15 +66,15 @@ public class XMLReader implements Runnable {
                         line = bufferedReader.readLine();
                     }
                 } catch (NullPointerException NE) {
-                    System.out.println("oef");
+//                    System.out.println("oef");
                 }
                 String finalString = stringBuilder.toString();
                 InputSource saxInputSource = new InputSource(new StringReader(finalString));
                 try {
                     saxParser.parse(saxInputSource, saxHandler);
                 } catch (SAXParseException saxException) {
-                    System.out.println(finalString);
-                    System.out.println(saxException);
+//                    System.out.println(finalString);
+//                    System.out.println(saxException);
                 }
                 stringBuilder = new StringBuilder();
             }
