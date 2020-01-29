@@ -20,10 +20,10 @@ import javax.xml.crypto.dom.*;
  */
 public class SAXHandler extends DefaultHandler {
 
-    private HashMap<Integer, Weatherstation> weatherstations = new HashMap<Integer, Weatherstation>();;
-    private Weatherstation weatherstation = null;
-    private WeatherMeasurement weatherMeasurement = null;
-    private ArrayList<Boolean> correctData = null;
+    private HashMap<Integer, Weatherstation> weatherstations;
+    private Weatherstation weatherstation;
+    private WeatherMeasurement weatherMeasurement;
+    private ArrayList<Boolean> correctData;
     private String elementValue;
     String json = null; //TODO Private toevoegen?
 
@@ -37,6 +37,7 @@ public class SAXHandler extends DefaultHandler {
      */
     public SAXHandler(MergeData mergeData) {
         this.mergeData = mergeData;
+        this.weatherstations = new HashMap<>();
     }
 
     /**
@@ -80,8 +81,17 @@ public class SAXHandler extends DefaultHandler {
 
     }
 
+    public void dommeshit()
+    {
+        for (int i = 0; i < 10; i ++) {
+            int sum = 0;
+            sum += i;
+        }
+        //System.out.println(sum);
+    }
+
     /**
-     * Method which defines the element where the SAX handler will end it's parsing, and which also runs the datacorrection
+     * Method which defines the element where the SAX handler will end its parsing, and which also runs the datacorrection
      * methods on the collected data.
      * @param uri Universal resource identifier
      * @param localName Local name
@@ -90,14 +100,15 @@ public class SAXHandler extends DefaultHandler {
     @Override
     public void endElement(String uri, String localName, String qName) {
         try {
-
             if (qName.equalsIgnoreCase("MEASUREMENT")) {
                 weatherstation.addWeatherMeasurement(weatherMeasurement);
             } else if (qName.equalsIgnoreCase("STN")) {
-                int stn = (Integer.valueOf(elementValue));
+                Integer stn = (Integer.valueOf(elementValue));
                 boolean exists = false; //TODO de boolean exists wordt niet meer gebruikt?
                 Weatherstation existingWeatherStation = null;
+                // hier komt de code wel
                 if (weatherstations.containsKey(stn)) {
+                    //TODO De code komt hier nooit
                     exists = true;
                     existingWeatherStation = weatherstations.get(stn);
                     weatherstation = existingWeatherStation;                //The existing weatherstation is the weatherstation which the measurement belongs to
@@ -109,12 +120,23 @@ public class SAXHandler extends DefaultHandler {
                 weatherMeasurement = new WeatherMeasurement();              //Make a new weathermeasurement
                 weatherMeasurement.setStn(Integer.valueOf(elementValue));   //Set the Stn variable of the weatherMeasurement to the corresponding one.
                 int aantal = 0;
-                ArrayList<WeatherMeasurement> allMeasurements = weatherstations.get(stn).getSpecificNumberOfWeatherMeasurements(30);
+                //System.out.println("wtf gebeurt er hier");
+                ArrayList<WeatherMeasurement> allMeasurements = new ArrayList<>();
+                //System.out.println(weatherstations.get(stn).getWeatherMeasurements());
+                System.out.println(weatherstations.get(stn).getWeatherMeasurements());
+                try {
+                        allMeasurements = weatherstations.get(stn).getSpecificNumberOfWeatherMeasurements(30);
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+                //System.out.println("hoi");
                 for (Boolean correctDataSingle : correctData) {
+                    //System.out.println("yay er gebeurt wat correctie");
                     switch(aantal) { //In this switch the data correction method is run on values if they are empty
                         case 0:
                             //TEMP
                             if (!correctDataSingle) {
+                                System.out.println("YO WE ZIJN HIER");
                                 ArrayList<Double> list = new ArrayList<>();
                                 for (WeatherMeasurement singleMeasurements:allMeasurements) {
                                     list.add(singleMeasurements.getTemperature());
@@ -240,7 +262,7 @@ public class SAXHandler extends DefaultHandler {
                 weatherMeasurement.setTime(elementValue);                   //Set the Time variable of the weatherMeasurement to the corresponding one.
             } else if (qName.equalsIgnoreCase("TEMP")) {
                 if (elementValue.equals("\t\t")) {
-                    //System.out.println("FUCK temp");
+                    //TODO De code komt hier nooit, waardoor er nooit bij de correctie gekomen kan worden voor temp
                     correctData.add(false);
                 } else {
                     correctData.add(true);
@@ -248,7 +270,7 @@ public class SAXHandler extends DefaultHandler {
                 }
             } else if (qName.equalsIgnoreCase("DEWP")) {
                 if (elementValue.equals("\t\t")) {
-                    //System.out.println("FUCK dewp");
+                    //System.out.println("FUCK dewp"); //HIER KOMT DE CODE WEL WAT
                     correctData.add(false);
                 } else {
                     correctData.add(true);
@@ -316,7 +338,6 @@ public class SAXHandler extends DefaultHandler {
                     //System.out.println("FUCK cloud");
                     correctData.add(false);
                 } else {
-
                     weatherMeasurement.setCloudy(Double.valueOf(elementValue));             //Set the Cloudy variable of the weatherMeasurement to the corresponding one.
                     correctData.add(true);
                 }

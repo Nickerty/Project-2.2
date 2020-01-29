@@ -1,5 +1,5 @@
 
-
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -59,5 +59,9 @@ public class Weatherstation {
      * @param aantal Used to tell the method how many values it must return
      * @return Depending on the "aantal" variable, the amount of values requested in form of an ArrayList
      */
-    public ArrayList<WeatherMeasurement> getSpecificNumberOfWeatherMeasurements(int aantal) { return (ArrayList<WeatherMeasurement>) weatherMeasurements.subList(weatherMeasurements.size()-(1+aantal), weatherMeasurements.size()-1);}
+    public ArrayList<WeatherMeasurement> getSpecificNumberOfWeatherMeasurements(int aantal) {
+        List<WeatherMeasurement> thirtyValues = weatherMeasurements.subList(weatherMeasurements.size()-(1+aantal), weatherMeasurements.size()-1);
+        ArrayList<WeatherMeasurement> returnthis = new ArrayList<>(thirtyValues);
+        return returnthis;
+    }
 }
