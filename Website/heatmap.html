@@ -26,7 +26,7 @@
    
    <div id="map"></div>
     <script>
-      window.onload = function() {
+      window.onload = async function() {
 
         // var testData = {
         //   max: 8,
@@ -66,28 +66,25 @@
           zoom: 5,
           layers: [baseLayer, heatmapLayer]
         });
-        var width = (+window.getComputedStyle(document.body).width.replace(/px/,''));
-        var height = (+window.getComputedStyle(document.body).height.replace(/px/,''));
 
         var animate = function() {
-            var lat = (Math.random()* width) >> 0;
-            var long = (Math.random()* height) >> 0;
-            console.log(lat)
-            console.log(long)
-            heatmapLayer.addData({lat: lat, lng: long, count: 100})
+            longlat = locationFromStn(10590);
+            console.log(longlat);
+            temperatuur = temperatureFromStn(10590);
+            heatmapLayer.addData({lat: latitude, lng: longitude, count: temperatuur})
 
             };
 
         setTimeout(function test() {
-          var timeout = 100
-          animate()
+          var timeout = 100;
+          animate();
           setTimeout(test, timeout);
         }, 100);
 
         // make accessible for debugging
         layer = heatmapLayer;
 
-        console.log(layer)
+        // console.log(layer)
       };
     </script>
   </body>

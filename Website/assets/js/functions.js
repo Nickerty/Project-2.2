@@ -10,25 +10,30 @@ function readTextFile(file, callback) {
     rawFile.send(null);
 }
 
-function locationFromStn(fileLocation, stn) {
-
-    readTextFile(fileLocation, function (text) {
-        var returnArray = new Array();
-        var json = JSON.parse(text)
-        stn.forEach(function (singlestn) {
-            let longlat = new Array();
-            json.forEach(function (allJson) {
-                var columns = allJson["data"];
-                columns.forEach(function (singleRow) {
-                    if (singleRow["STN"] == singlestn) {
-                        longlat["long"] = singleRow["longitude"];
-                        longlat["lat"] = singleRow["latiude"];
-                        returnArray.push(longlat);
-                        longlat = [];
-                    }
-                });
-            })
+function locationFromStn(stn) {
+    longlat = []
+    readTextFile("json/tbl_name.json", function (text) {
+        var json = JSON.parse(text);
+        json.forEach(function (allJson) {
+            var columns = allJson["data"];
+            columns.forEach(function (singleRow) {
+                if (singleRow["STN"] == stn) {
+                    long = singleRow["longitude"];
+                    longlat.push(long)
+                }
+            });
         });
     });
-    return returnArray;
+    return longlat
+}
+
+function temperatureFromStn(stn) {
+    readTextFile("json/ding1.json", function (text) {
+        var data = JSON.parse(text);
+        var specificData = data[stn]["weatherMeasurements"];
+        specificData.forEach(function (measurement) {
+            console.log(measurement["temp"]);
+            console.log(stn);
+        })
+    });
 }
