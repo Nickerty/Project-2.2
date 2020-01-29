@@ -15,8 +15,8 @@
       h1 { position:absolute; background:black; color:white; padding:10px; font-weight:200; z-index:10000;}
       #all-examples-info { position:absolute; background:white; font-size:16px; padding:20px; top:100px; width:350px; line-height:150%; border:1px solid rgba(0,0,0,.2);}
     </style>
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
-    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+      <link rel="stylesheet" href="assets/css/leaflet.css"/>
+      <script src="assets/js/leaflet.js"></script>
       <script src="assets/js/heatmap.js"></script>
       <script src="plugins/leaflet-heatmap/leaflet-heatmap.js"></script>
 
@@ -33,7 +33,7 @@
         };
 
         var baseLayer = L.tileLayer(
-          'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+          'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
             attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
             maxZoom: 18
           }
