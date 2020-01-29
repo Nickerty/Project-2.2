@@ -1,7 +1,6 @@
 import com.google.gson.*;
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.io.IOException;
+
+import java.io.*;
 import java.util.*;
 
 /**
@@ -74,8 +73,7 @@ public class MergeData implements Runnable {
      * @param value A string to tell the method what to do. Two options are: Add & Clear
      * @param data The data which the method needs to do something with
      */
-    public synchronized void adjustData(String value, HashMap<Integer, Weatherstation> data) {
-        if(value.equals("Add")){
+    public synchronized void adjustData(HashMap<Integer, Weatherstation> data) {
             this.weatherstationById.putAll(data);               //Adds all received data to existing Hashmap
             amountOfData++;
             this.tempData.putAll(this.weatherstationById);
@@ -84,31 +82,9 @@ public class MergeData implements Runnable {
                 writeToJsonFIle();
                 amountOfData = 0;
             }
-        }
-////        else if(value.equals("Clear")){
-////            this.tempData.putAll(data);                         //Adds all known data to temporary Hashmap
-////            this.weatherstationById.clear();                    //Clears the Hashmap with data which has to be merged
-////        }
-        else{
-            System.out.println("Something went wrong, please contact the programmer");
-        }
-
     }
 
-    /**
-     * Method for adding a weatherstation to a specific ID
-     * @param measurementId ID for tell the method which weatherstation it has to deal with, same as STN of a weatherstation
-     * @param newWeatherStation A Weatherstation which needs to be linked to the corresponding ID
-     */
 
-
-    /**
-     * Method to replace the old data which was linked to an ID with new data
-     * @param measurementId ID for tell the method which weatherstation it has to deal with, same as STN of a weatherstation
-     * @param newWeatherStation A Weatherstation which needs to be linked to the corresponding ID
-     */
-//    public synchronized void mergeData(int measurementId, Weatherstation newWeatherStation){
-//        //Replaces a existing weatherstation with a new one
 //    }
 
 //    public void printIt(){
@@ -117,11 +93,6 @@ public class MergeData implements Runnable {
 //            String data = new Gson().toJson(copyPasteWeatherStationsList);
 //            System.out.println("Current data: "+data);
 //    }
-
-    /**
-     * Method for getting the HashMap weatherstationById
-     * @return Hashmap of the newly achieved data
-     */
 
     /**
      * Method for getting the HashMap tempData
@@ -142,7 +113,6 @@ public class MergeData implements Runnable {
             String data = new Gson().toJson(this.tempData);
             writer.println(data);
             writer.close();
-//            weatherstationById = new HashMap<Integer, Weatherstation>();
             tempData.clear();
             fileNumber++;
         } catch (Exception e) {

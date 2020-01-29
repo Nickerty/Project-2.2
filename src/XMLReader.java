@@ -1,18 +1,8 @@
+import org.xml.sax.*;
 
-
+import javax.xml.parsers.*;
 import java.io.*;
-import java.util.Calendar;
-import java.util.List;
-
-import javax.xml.*;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-import java.sql.SQLXML;
-import java.util.concurrent.TimeUnit;
-
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
+import java.util.concurrent.*;
 
 /**
  * The XMLReader class is a class which reads the XML file which it received. Once it has opened the file it will
