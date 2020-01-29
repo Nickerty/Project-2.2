@@ -81,7 +81,7 @@ public class MergeData implements Runnable {
             this.tempData.putAll(this.weatherstationById);
 
             if(amountOfData > 800) {
-                writeToJsonFIle();
+                //writeToJsonFIle();
                 amountOfData = 0;
             }
         }

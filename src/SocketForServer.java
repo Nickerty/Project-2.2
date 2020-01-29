@@ -28,34 +28,32 @@ public class SocketForServer {
         int port = 7789;                //Port for connection (server-client)
         ServerSocket server;
         InputStream input;
-
+        int connection = 0;
         try {
-            server = new ServerSocket(port);    //Make new serverSocket
+            server = new ServerSocket(port, 800);    //Make new serverSocket
             server.setSoTimeout(1000);
-        } catch (Exception e) {
-            //System.out.println(e);
-            server = null;
-        }
-        int i = 0;
-
-        ExecutorService threadPool = Executors.newFixedThreadPool(801);
-        MergeData mergeData = new MergeData();      //Make new instance of MergeData
-        threadPool.execute(mergeData);
-        while (true) {
+            int i = 0;
+            MergeData mergeData = new MergeData();      //Make new instance of MergeData
+            Thread worker = new Thread(mergeData);
+            worker.start();
+            while (true) {
+                System.out.println(connection);
                 System.out.println("Waiting...");
                 Socket client;
                 try {
                     client = server.accept();    //Server waiting for an incoming connection
+                    connection++;
                 } catch (SocketTimeoutException e) {
                     client = null;
-                    try {
-                        TimeUnit.SECONDS.sleep(1);
-                    } catch (Exception es) {
-                        System.out.println("WTF");
-                    }
+//                    try {
+//                        TimeUnit.SECONDS.sleep(1);
+//                    } catch (Exception es) {
+//                        System.out.println("WTF");
+//                    }
+                    System.out.println("Socket timeout");
                 } catch (Exception se) {
                     client = null;
-                    System.out.println(se);
+                    System.out.println("Other exception");
                 }
 
                 if(client != null) {
@@ -67,14 +65,22 @@ public class SocketForServer {
                         input = null;
                     }
                     if(input != null) {
-                        XMLReader xmlReader = new XMLReader(mergeData); //Read XML file using an instance of XMLReader
+                        XMLReader xmlReader = new XMLReader(mergeData);         //Read XML file using an instance of XMLReader
                         xmlReader.addData(input);                               //Add the received data to the instance of XMLReader
-                        threadPool.execute(xmlReader);                                         //Start the Thread
+                        Thread xmlWorker = new Thread(xmlReader);                                       //Start the Thread
+                        xmlWorker.start();
                         System.out.println("Connection established");
+                    } else {
+                        System.out.println("Input is null");
                     }
                 }
 
+            }
+        } catch (Exception e) {
+            //System.out.println(e);
+            server = null;
         }
+
 
     }
 }

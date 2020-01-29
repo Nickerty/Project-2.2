@@ -13,6 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 /**
  * The XMLReader class is a class which reads the XML file which it received. Once it has opened the file it will
@@ -25,7 +26,8 @@ import org.xml.sax.SAXException;
 public class XMLReader implements Runnable {
     private InputStream data;
     private MergeData mergeData;
-
+    public static final String UTF8_BOM = "\uFEFF";
+    private volatile boolean running = true;
     /**
      * Constructor for the XMLReader class
      * @param mergeData Instance of the class MergeData
@@ -44,25 +46,39 @@ public class XMLReader implements Runnable {
             SAXParserFactory factory = SAXParserFactory.newInstance();
             SAXParser saxParser = factory.newSAXParser();
             SAXHandler saxHandler = new SAXHandler(mergeData);
-            StringBuilder stringBuilder = new StringBuilder();
-
-            while(true) {
+            while(running) {
                 String rowLines = null;
                 String line = null;
-
+                StringBuilder stringBuilder = new StringBuilder();
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(data, "UTF-8"));
-                line = bufferedReader.readLine();
-                stringBuilder.append(line);
-                while (!line.equals("</WEATHERDATA>")) {
+                try {
                     line = bufferedReader.readLine();
-                    stringBuilder.append(line);
+                    Boolean done = false;
+                    while (!done) {
+                        if (line.equals("<WEATHERDATA>")) {
+                            stringBuilder.append(line);
+                            done = true;
+                            while (!line.equals("</WEATHERDATA>")) {
+                                line = bufferedReader.readLine();
+                                stringBuilder.append(line);
+                            }
+                        }
+                        line = bufferedReader.readLine();
+                    }
+                } catch (NullPointerException NE) {
+                    System.out.println("oef");
                 }
-                InputSource saxInputSource = new InputSource(new StringReader(stringBuilder.toString()));
-                saxParser.parse(saxInputSource, saxHandler);
+                String finalString = stringBuilder.toString();
+                InputSource saxInputSource = new InputSource(new StringReader(finalString));
+                try {
+                    saxParser.parse(saxInputSource, saxHandler);
+                } catch (SAXParseException saxException) {
+                    System.out.println(finalString);
+                    System.out.println(saxException);
+                }
                 stringBuilder = new StringBuilder();
-
-                TimeUnit.MILLISECONDS.sleep(900);
             }
+
             //
 //                System.out.println(stringBuilder);
 //                saxParser.parse(data, saxHandler);
@@ -84,6 +100,11 @@ public class XMLReader implements Runnable {
      */
     public void addData(InputStream input) {
         this.data = input;
+    }
+
+    public void stopRunning()
+    {
+        running = false;
     }
 
 
