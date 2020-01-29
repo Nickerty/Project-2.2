@@ -1,13 +1,7 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import org.xml.sax.*;
+import org.xml.sax.helpers.*;
 
-import com.google.gson.Gson;
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
-
-import javax.xml.crypto.dom.*;
+import java.util.*;
 
 /**
  * The SaxHandler class parses through the given XML document using a SAX handler and stores the data from the
@@ -25,6 +19,7 @@ public class SAXHandler extends DefaultHandler {
     private WeatherMeasurement weatherMeasurement = null;
     private ArrayList<Boolean> correctData = null;
     private String elementValue;
+    private boolean delete = false;
     String json = null; //TODO Private toevoegen?
 
     private MergeData mergeData;
@@ -60,8 +55,7 @@ public class SAXHandler extends DefaultHandler {
 //            timeTillPrintCounter = 1;                   //Counter for call to print and merge
 //        }
 //        timeTillPrintCounter++;
-        mergeData.adjustData("Add", weatherstations);         //Merges all the data into one JSON file
-        weatherstations.clear();
+        mergeData.adjustData(weatherstations);         //Merges all the data into one JSON file
     }
 
     /**
@@ -109,7 +103,12 @@ public class SAXHandler extends DefaultHandler {
                 weatherMeasurement = new WeatherMeasurement();              //Make a new weathermeasurement
                 weatherMeasurement.setStn(Integer.valueOf(elementValue));   //Set the Stn variable of the weatherMeasurement to the corresponding one.
                 int aantal = 0;
-                ArrayList<WeatherMeasurement> allMeasurements = weatherstations.get(stn).getSpecificNumberOfWeatherMeasurements(30);
+//                ArrayList<WeatherMeasurement> allMeasurements = weatherstations.get(stn).getSpecificNumberOfWeatherMeasurements(30);
+                ArrayList<WeatherMeasurement> allMeasurements = weatherstations.get(stn).getWeatherMeasurements();
+                if(allMeasurements.size()>=30){
+                    weatherstations.get(stn).removeOldestValue();
+//                    System.out.println("Reached 30 values so the oldest value will be removed");
+                }
                 for (Boolean correctDataSingle : correctData) {
                     switch(aantal) { //In this switch the data correction method is run on values if they are empty
                         case 0:
