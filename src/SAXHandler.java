@@ -55,7 +55,6 @@ public class SAXHandler extends DefaultHandler {
 //        }
 //        timeTillPrintCounter++;
         mergeData.adjustData(weatherstations);         //Merges all the data into one JSON file
-        weatherstations = new HashMap<>();
     }
 
     /**
@@ -107,7 +106,7 @@ public class SAXHandler extends DefaultHandler {
                 ArrayList<WeatherMeasurement> allMeasurements = weatherstations.get(stn).getWeatherMeasurements();
                 if(allMeasurements.size()>=30){
                     weatherstations.get(stn).removeOldestValue();
-//                    System.out.println("Reached 30 values so the oldest value will be removed");
+                    System.out.println("Reached 30 values so the oldest value will be removed");
                 }
                 for (Boolean correctDataSingle : correctData) {
                     switch(aantal) { //In this switch the data correction method is run on values if they are empty
