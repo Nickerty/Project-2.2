@@ -38,8 +38,8 @@ var Store = (function StoreClosure() {
     this._coordinator = {};
     this._data = [];
     this._radi = [];
-    this._min = 10;
-    this._max = 1;
+    this._min = -100;
+    this._max = 100;
     this._xField = config['xField'] || config.defaultXField;
     this._yField = config['yField'] || config.defaultYField;
     this._valueField = config['valueField'] || config.defaultValueField;
@@ -538,7 +538,7 @@ var Canvas2dRenderer = (function Canvas2dRendererClosure() {
       var max = this._max;
       var min = this._min;
 
-      value = (Math.abs(max-min) * (data/255)) >> 0;
+      value = ((max-min) * (data/255)) >> 0;
 
       return value;
     },

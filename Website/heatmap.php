@@ -1,16 +1,48 @@
+<?php
+$data = file_get_contents("./json/gulfMexico.json");
+$tbl_names = file_get_contents("./json/tbl_name.json");
+$jsonTabelNames = json_decode($tbl_names, true);
+$dataRow = $jsonTabelNames[0]["data"];
+
+$file = file_get_contents("./json/ding1.json");
+$jsonFile = json_decode($file, true);
+
+$weatherStations = json_decode($data, true);
+
+function getTemperature($stn, $jsonFile) {
+    $jsonFileNeeded = $jsonFile[$stn]["weatherMeasurements"];
+    $gemiddelde = 0;
+    $aantal = 0;
+    foreach ($jsonFileNeeded as $singleNodig) {
+        $singleNodig['temp'];
+        $gemiddelde += $singleNodig['temp'];
+        $aantal++;
+    }
+    return round($gemiddelde / $aantal);
+}
+
+function getLocation($stn, $dataRow) {
+    foreach ($dataRow as $singleRow) {
+        if ($singleRow["STN"] == $stn) {
+            return [$singleRow["latiude"], $singleRow["longitude"]];
+        }
+    }
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <title>Heatmap Temperature</title>
     <style>
-      body, html { margin:0; padding:0; height:100%;}
+body, html { margin:0; padding:0; height:100%;}
       body { font-family:sans-serif; }
       body * { font-weight:200;}
       h1 { position:absolute; background:white; padding:10px;}
       #map { height:100%; }
       .leaflet-container {
-        background: rgba(0,0,0,.8) !important;
+    background: rgba(0,0,0,.8) !important;
       }
       h1 { position:absolute; background:black; color:white; padding:10px; font-weight:200; z-index:10000;}
       #all-examples-info { position:absolute; background:white; font-size:16px; padding:20px; top:100px; width:350px; line-height:150%; border:1px solid rgba(0,0,0,.2);}
@@ -23,10 +55,13 @@
 
   </head>
   <body>
+  <?php
+echo "
    
-   <div id="map"></div>
+   <div id=\"map\"></div>
     <script>
-      window.onload = async function() {
+    doit();
+      function doit() {
 
         // var testData = {
         //   max: 8,
@@ -35,26 +70,26 @@
 
         var baseLayer = L.tileLayer(
           'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-            attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
+            attribution: 'Map data &copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"http://cloudmade.com\">CloudMade</a>',
             maxZoom: 18
           }
         );
 
         var cfg = {
           // radius should be small ONLY if scaleRadius is true (or small radius is intended)
-          "radius": 1,
-          "maxOpacity": .8, 
+          \"radius\": 1,
+          \"maxOpacity\": .8, 
           // scales the radius based on map zoom
-          "scaleRadius": true, 
+          \"scaleRadius\": true, 
           // if set to false the heatmap uses the global maximum for colorization
           // if activated: uses the data maximum within the current map boundaries 
           //   (there will always be a red spot with useLocalExtremas true)
-          "useLocalExtrema": true,
-          // which field name in your data represents the latitude - default "lat"
+          \"useLocalExtrema\": true,
+          // which field name in your data represents the latitude - default \"lat\"
           latField: 'lat',
-          // which field name in your data represents the longitude - default "lng"
+          // which field name in your data represents the longitude - default \"lng\"
           lngField: 'lng',
-          // which field name in your data represents the data value - default "value"
+          // which field name in your data represents the data value - default \"value\"
           valueField: 'count'
         };
 
@@ -66,26 +101,22 @@
           zoom: 5,
           layers: [baseLayer, heatmapLayer]
         });
+        var animate = function() {";
+            foreach ($weatherStations as $weatherStation) {
+                echo "heatmapLayer.addData({lat: ".getLocation($weatherStation["stn"], $dataRow)[0].", lng: ".getLocation($weatherStation["stn"], $dataRow)[1].", count: ".getTemperature($weatherStation["stn"], $jsonFile)."});\n";
+                echo "console.log('oef'); \n";
+            }
+            echo "};
 
-        var animate = function() {
-            longlat = locationFromStn(10590);
-            console.log(longlat);
-            temperatuur = temperatureFromStn(10590);
-            heatmapLayer.addData({lat: latitude, lng: longitude, count: temperatuur})
-
-            };
-
-        setTimeout(function test() {
-          var timeout = 100;
           animate();
-          setTimeout(test, timeout);
-        }, 100);
 
         // make accessible for debugging
         layer = heatmapLayer;
 
-        // console.log(layer)
+        console.log(layer)
       };
     </script>
   </body>
-</html>
+</html>";
+
+?>
