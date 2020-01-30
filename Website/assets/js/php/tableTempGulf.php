@@ -5,11 +5,14 @@ $dataTotal = file_get_contents("./json/ding1.json");
 $decodedTotal = json_decode($dataTotal, true);
 
 function getTemperature($stn, $decodedTotal){
-    $acutalTemp =  $decodedTotal[$stn]["weatherMeasurements"];
+    $aantal = 0;
+    $totalTemp = 0;
+    $acutalTemp = $decodedTotal[$stn]["weatherMeasurements"];
     foreach ($acutalTemp as $temp){
-        $temp["temp"];
+        $totalTemp += $temp["temp"];
+        $aantal++;
     }
-
-return $acutalTemp;
+    $totalTemp = $totalTemp / $aantal;
+    return $totalTemp;
 }
 ?>
