@@ -55,6 +55,7 @@ public class SAXHandler extends DefaultHandler {
 //        }
 //        timeTillPrintCounter++;
         mergeData.adjustData(weatherstations);         //Merges all the data into one JSON file
+        weatherstations = new HashMap<>();
     }
 
     /**
