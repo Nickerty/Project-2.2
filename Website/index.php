@@ -1,6 +1,6 @@
 <?php
-include './assets/js/php/tableTempGulf.php';
-include './assets/js/php/top10CaribbeanSea.php';
+include '/var/www/html/assets/js/php/tableTempGulf.php';
+include '/var/www/html/assets/js/php/top10CaribbeanSea.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -199,20 +199,25 @@ include './assets/js/php/top10CaribbeanSea.php';
                                     </thead>
                                     <tbody>
                                     <?php
-                                    $array_data = [];
+				    $array_data = [];
                                     foreach ($decodedCaribbean as $single) {
                                         $stn = $single["stn"];
                                         $temp = getTemperature($single["stn"],  $decodedTotal);
-                                        array_push($array_data, [$temp, $stn]);
+					if(is_nan($temp)) {
+					    continue;
+					}
+					array_push($array_data, ["stn"=>$stn, "temp"=>$temp]);
                                     }
-                                    rsort($array_data);
+				    function compare_temp($a, $b) {
+					return strnatcmp($b['temp'], $a['temp']);
+				    }
+                                    usort($array_data, 'compare_temp');
                                     $array_data = array_slice($array_data, 0, 10);
                                     foreach ($array_data as $data) {
                                     echo "
-                                                    
                                                     <tr>
-                                                        <th>".$data[1]."</th>
-                                                        <td>".$data[0]."</td>
+                                                        <th>".$data['stn']."</th>
+                                                        <td>".$data['temp']."</td>
                                                         <td></td>
                                                     </tr>
                                                      ";

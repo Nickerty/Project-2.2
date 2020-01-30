@@ -1,15 +1,13 @@
 <?php
-$data = file_get_contents("./json/gulfMexico.json");
-$tbl_names = file_get_contents("./json/tbl_name.json");
+include '/var/www/html/assets/js/php/tableTempGulf.php';
+include '/var/www/html/assets/js/php/top10CaribbeanSea.php';
+$data = file_get_contents("/var/www/html/json/gulfMexico.json");
+$tbl_names = file_get_contents("/var/www/html/json/tbl_name.json");
 $jsonTabelNames = json_decode($tbl_names, true);
 $dataRow = $jsonTabelNames[0]["data"];
-
-$file = file_get_contents("./json/ding1.json");
-$jsonFile = json_decode($file, true);
-
 $weatherStations = json_decode($data, true);
 
-function getTemperature($stn, $jsonFile) {
+function getTemperature2($stn, $jsonFile) {
     $jsonFileNeeded = $jsonFile[$stn]["weatherMeasurements"];
     $gemiddelde = 0;
     $aantal = 0;
@@ -103,7 +101,7 @@ echo "
         });
         var animate = function() {";
             foreach ($weatherStations as $weatherStation) {
-                echo "heatmapLayer.addData({lat: ".getLocation($weatherStation["stn"], $dataRow)[0].", lng: ".getLocation($weatherStation["stn"], $dataRow)[1].", count: ".getTemperature($weatherStation["stn"], $jsonFile)."});\n";
+		echo "heatmapLayer.addData({lat: ".getLocation($weatherStation["stn"], $dataRow)[0].", lng: ".getLocation($weatherStation["stn"], $dataRow)[1].", count: ".getTemperature2($weatherStation["stn"], $decodedTotal)."});\n";
                 echo "console.log('oef'); \n";
             }
             echo "};
