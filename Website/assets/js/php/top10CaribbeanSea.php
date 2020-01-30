@@ -6,11 +6,12 @@ $decodeTotal = json_decode($dataTotal, true);
 
 
 function getRainfall($stn, $decodedTotal){
-    $actualFile = $decodedTotal[$stn]["rf"];
+    $actualFile = $decodedTotal[$stn]["weatherMeasurements"];
     foreach ($actualFile as $rf){
-        $rf = ["rf"];
+        $rf["rf"];
     }
 
 return $rf;
 
 }
+?>
