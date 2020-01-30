@@ -1,3 +1,7 @@
+<?php
+include 'tableTempGulf.php';
+include 'top10CaribbeanSea.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -177,28 +181,28 @@
                             <div class="col-xl-8">
                                 <div class="card messages">
                                     <div class="card-body">
-                                        <h4 class="mt-0 header-title mb-4">Top-10 hotest days</h4>
+                                        <h4 class="mt-0 header-title mb-4">Top-10 rainfall per day</h4>
                                         <div class="table-rep-plugin">
                                             <div class="table-responsive mb-0" data-pattern="priority-columns">
                                                 <table id="tech-companies-1" class="table table-striped">
                                                     <thead>
                                                     <tr>
                                                         <th>Station</th>
-                                                        <th data-priority="1">Temperature(°C)</th>
+                                                        <th data-priority="1">Rainfall(mm)</th>
                                                         <th data-priority="3">Location</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
+                                                    <?php
+                                                    echo "
+                                                    foreach($
                                                     <tr>
-                                                        <th>LOC <span class="co-name">TEST</span></th>
-                                                        <td>35.54 °C</td>
+                                                        <th>LOC <span class=\"co-name\">TEST</span></th>
+                                                        <td>".."</td>
                                                         <td>PLACE</td>
                                                     </tr>
-                                                    <tr>
-                                                        <th>LOC<span class="co-name">TEST2</span></th>
-                                                        <td>378.94 °C</td>
-                                                        <td>PLACE</td>
-                                                    </tr>
+                                                     ";
+                                                    ?>
                                                     </tbody>
                                                 </table>
                                             </div>
