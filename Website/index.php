@@ -1,6 +1,6 @@
 <?php
-include '/var/www/html/assets/js/php/tableTempGulf.php';
-include '/var/www/html/assets/js/php/top10CaribbeanSea.php';
+include './assets/js/php/tableTempGulf.php';
+include './assets/js/php/top10CaribbeanSea.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -181,70 +181,122 @@ include '/var/www/html/assets/js/php/top10CaribbeanSea.php';
             </div>
             <!-- end row -->
 
+            <div class="row">
+                <!-- end col -->
+                <div class="col-xl-6">
+                    <div class="card messages">
+                        <div class="card-body">
+                            <h4 class="mt-0 header-title mb-4">Top-10 temp per day</h4>
+                            <div class="table-rep-plugin">
+                                <div class="table-responsive mb-0" data-pattern="priority-columns">
+                                    <table id="tech-companies-1" class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>Station</th>
+                                            <th data-priority="1">Temperature(C)</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <?php
+                                        $array_data = [];
+                                        foreach ($decodedCaribbean as $single) {
+                                            $stn = $single["stn"];
+                                            $temp = getTemperature($single["stn"], $decodedTotal);
+                                            if (is_nan($temp)) {
+                                                continue;
+                                            }
+                                            array_push($array_data, ["stn" => $stn, "temp" => $temp]);
+                                        }
+                                        function compare_temp($a, $b)
+                                        {
+                                            return strnatcmp($b['temp'], $a['temp']);
+                                        }
 
-            <!-- end col -->
-            <div class="col-xl-8">
-                <div class="card messages">
-                    <div class="card-body">
-                        <h4 class="mt-0 header-title mb-4">Top-10 rainfall per day</h4>
-                        <div class="table-rep-plugin">
-                            <div class="table-responsive mb-0" data-pattern="priority-columns">
-                                <table id="tech-companies-1" class="table table-striped">
-                                    <thead>
-                                    <tr>
-                                        <th>Station</th>
-                                        <th data-priority="1">Rainfall(mm)</th>
-                                        <th data-priority="3">Location</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <?php
-				    $array_data = [];
-                                    foreach ($decodedCaribbean as $single) {
-                                        $stn = $single["stn"];
-                                        $temp = getTemperature($single["stn"],  $decodedTotal);
-					if(is_nan($temp)) {
-					    continue;
-					}
-					array_push($array_data, ["stn"=>$stn, "temp"=>$temp]);
-                                    }
-				    function compare_temp($a, $b) {
-					return strnatcmp($b['temp'], $a['temp']);
-				    }
-                                    usort($array_data, 'compare_temp');
-                                    $array_data = array_slice($array_data, 0, 10);
-                                    foreach ($array_data as $data) {
-                                    echo "
+                                        usort($array_data, 'compare_temp');
+                                        $array_data = array_slice($array_data, 0, 10);
+                                        foreach ($array_data as $data) {
+                                            echo "
                                                     <tr>
-                                                        <th>".$data['stn']."</th>
-                                                        <td>".$data['temp']."</td>
-                                                        <td></td>
+                                                        <th>" . $data['stn'] . "</th>
+                                                        <td>" . $data['temp'] . "</td>
                                                     </tr>
                                                      ";
-                                    }
-                                    ?>
+                                        }
+                                        ?>
 
-                                    </tbody>
-                                </table>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- end tab-content -->
                             </div>
-                            <!-- end tab-content -->
                         </div>
                     </div>
+                    <!-- end col -->
+
                 </div>
-                <!-- end col -->
+                <!-- end row -->
 
+
+                <div class="col-xl-6">
+                    <div class="card messages">
+                        <div class="card-body">
+                            <h4 class="mt-0 header-title mb-4">Top-10 rain per day</h4>
+                            <div class="table-rep-plugin">
+                                <div class="table-responsive mb-0" data-pattern="priority-columns">
+                                    <table id="tech-companies-1" class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>Station</th>
+                                            <th data-priority="1">Rainfall(mm)</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <?php
+                                        $array_data = [];
+                                        foreach ($decodedCaribbean as $single) {
+                                            $stn = $single["stn"];
+                                            $rain = getRainfall($single["stn"], $decodedTotal);
+                                            if (is_nan($temp)) {
+                                                continue;
+                                            }
+                                            array_push($array_data, ["stn" => $stn, "rain" => $rain]);
+                                        }
+                                        function compare_rain($a, $b)
+                                        {
+                                            return strnatcmp($b['rain'], $a['rain']);
+                                        }
+                                        usort($array_data, 'compare_rain');
+                                        $array_data = array_slice($array_data, 0, 10);
+                                        foreach ($array_data as $data) {
+                                            echo "
+                                                    <tr>
+                                                        <th>" . $data['stn'] . "</th>
+                                                        <td>" . $data['rain'] . "</td>
+                                                    </tr>
+                                                     ";
+                                        }
+                                        ?>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- end tab-content -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end col -->
+
+                </div>
             </div>
-            <!-- end row -->
-
         </div>
         <!-- container-fluid -->
-
     </div>
-    <!-- content -->
+</div>
+<!-- content -->
 
-    <footer class="footer">
-        © 2020 GROEP UNO DE MAYO
-    </footer>
+<footer class="footer">
+    © 2020 GROEP UNO DE MAYO
+</footer>
 
 </div>
 <!-- ============================================================== -->

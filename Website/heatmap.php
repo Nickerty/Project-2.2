@@ -1,8 +1,8 @@
 <?php
-include '/var/www/html/assets/js/php/tableTempGulf.php';
-include '/var/www/html/assets/js/php/top10CaribbeanSea.php';
-$data = file_get_contents("/var/www/html/json/gulfMexico.json");
-$tbl_names = file_get_contents("/var/www/html/json/tbl_name.json");
+include './assets/js/php/tableTempGulf.php';
+include './assets/js/php/top10CaribbeanSea.php';
+$data = file_get_contents("./json/gulfMexico.json");
+$tbl_names = file_get_contents("./json/tbl_name.json");
 $jsonTabelNames = json_decode($tbl_names, true);
 $dataRow = $jsonTabelNames[0]["data"];
 $weatherStations = json_decode($data, true);

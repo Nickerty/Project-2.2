@@ -1,15 +1,21 @@
 <?php
-$dataCaribbean = file_get_contents("/var/www/html/json/Caribbean.json");
+$dataCaribbean = file_get_contents("./json/Caribbean.json");
 $decodedCaribbean = json_decode($dataCaribbean, true);
 
 
-function getRainfall($stn, $decodedTotal){
+function getRainfall($stn, $decodedTotal)
+{
     $actualFile = $decodedTotal[$stn]["weatherMeasurements"];
-    foreach ($actualFile as $rf){
-        $rf["rf"];
+    $aantal = 0;
+    $gemiddelde = 0;
+    foreach ($actualFile as $rf) {
+        $gemiddelde = $rf["rf"];
+        $aantal++;
     }
+    $gemiddelde = $gemiddelde / $aantal;
 
-return $rf;
+    return $gemiddelde * 100;
 
 }
+
 ?>

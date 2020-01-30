@@ -12,10 +12,10 @@ function scan_dir($dir) {
     return ($files) ? $files : false;
 }
 
-$dataGulf = file_get_contents("/var/www/html/json/gulfMexico.json");
+$dataGulf = file_get_contents("./json/gulfMexico.json");
 $decodedGulf = json_decode($dataGulf, true);
-$files = scan_dir('/var/www/html/json/', SCANDIR_SORT_DESCENDING);
-$dataTotal = file_get_contents("/var/www/html/json/".$files[0]);
+$files = scan_dir('./json/', SCANDIR_SORT_DESCENDING);
+$dataTotal = file_get_contents("./json/".$files[0]);
 $decodedTotal = json_decode($dataTotal, true);
 
 function getTemperature($stn, $decodedTotal){
