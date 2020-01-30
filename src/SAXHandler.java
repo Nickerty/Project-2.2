@@ -1,13 +1,7 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import org.xml.sax.*;
+import org.xml.sax.helpers.*;
 
-import com.google.gson.Gson;
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
-
-import javax.xml.crypto.dom.*;
+import java.util.*;
 
 /**
  * The SaxHandler class parses through the given XML document using a SAX handler and stores the data from the
@@ -20,11 +14,12 @@ import javax.xml.crypto.dom.*;
  */
 public class SAXHandler extends DefaultHandler {
 
-    private HashMap<Integer, Weatherstation> weatherstations;
-    private Weatherstation weatherstation;
-    private WeatherMeasurement weatherMeasurement;
-    private ArrayList<Boolean> correctData;
+    private HashMap<Integer, Weatherstation> weatherstations = new HashMap<Integer, Weatherstation>();
+    private Weatherstation weatherstation = null;
+    private WeatherMeasurement weatherMeasurement = null;
+    private ArrayList<Boolean> correctData = null;
     private String elementValue;
+    private boolean delete = false;
     String json = null; //TODO Private toevoegen?
 
     private MergeData mergeData;
@@ -37,7 +32,6 @@ public class SAXHandler extends DefaultHandler {
      */
     public SAXHandler(MergeData mergeData) {
         this.mergeData = mergeData;
-        this.weatherstations = new HashMap<>();
     }
 
     /**
@@ -61,8 +55,7 @@ public class SAXHandler extends DefaultHandler {
 //            timeTillPrintCounter = 1;                   //Counter for call to print and merge
 //        }
 //        timeTillPrintCounter++;
-        mergeData.adjustData("Add", weatherstations);         //Merges all the data into one JSON file
-        weatherstations.clear();
+        mergeData.adjustData(weatherstations);         //Merges all the data into one JSON file
     }
 
     /**
@@ -81,15 +74,6 @@ public class SAXHandler extends DefaultHandler {
 
     }
 
-    public void dommeshit()
-    {
-        for (int i = 0; i < 10; i ++) {
-            int sum = 0;
-            sum += i;
-        }
-        //System.out.println(sum);
-    }
-
     /**
      * Method which defines the element where the SAX handler will end its parsing, and which also runs the datacorrection
      * methods on the collected data.
@@ -100,10 +84,9 @@ public class SAXHandler extends DefaultHandler {
     @Override
     public void endElement(String uri, String localName, String qName) {
         try {
-            if (qName.equalsIgnoreCase("MEASUREMENT")) {
-                weatherstation.addWeatherMeasurement(weatherMeasurement);
-            } else if (qName.equalsIgnoreCase("STN")) {
-                Integer stn = (Integer.valueOf(elementValue));
+            ArrayList<WeatherMeasurement> allMeasurements = new ArrayList<>();
+            if (qName.equalsIgnoreCase("STN")) {
+                int stn = (Integer.valueOf(elementValue));
                 boolean exists = false; //TODO de boolean exists wordt niet meer gebruikt?
                 Weatherstation existingWeatherStation = null;
                 // hier komt de code wel
@@ -119,140 +102,13 @@ public class SAXHandler extends DefaultHandler {
                 }
                 weatherMeasurement = new WeatherMeasurement();              //Make a new weathermeasurement
                 weatherMeasurement.setStn(Integer.valueOf(elementValue));   //Set the Stn variable of the weatherMeasurement to the corresponding one.
-                int aantal = 0;
-                //System.out.println("wtf gebeurt er hier");
-                ArrayList<WeatherMeasurement> allMeasurements = new ArrayList<>();
-                //System.out.println(weatherstations.get(stn).getWeatherMeasurements());
-                System.out.println(weatherstations.get(stn).getWeatherMeasurements());
-                try {
-                        allMeasurements = weatherstations.get(stn).getSpecificNumberOfWeatherMeasurements(30);
-                } catch (Exception e) {
-                    System.out.println(e);
-                }
-                //System.out.println("hoi");
-                for (Boolean correctDataSingle : correctData) {
-                    //System.out.println("yay er gebeurt wat correctie");
-                    switch(aantal) { //In this switch the data correction method is run on values if they are empty
-                        case 0:
-                            //TEMP
-                            if (!correctDataSingle) {
-                                System.out.println("YO WE ZIJN HIER");
-                                ArrayList<Double> list = new ArrayList<>();
-                                for (WeatherMeasurement singleMeasurements:allMeasurements) {
-                                    list.add(singleMeasurements.getTemperature());
-                                }
-                                Double fixedValue = dataCorrection.correctTheData(list);
-                                weatherMeasurement.setTemperature(fixedValue);
-                            }
-                            break;
-                        case 1:
-                            //DEWP
-                            if (!correctDataSingle) {
-                                ArrayList<Double> list = new ArrayList<>();
-                                for (WeatherMeasurement singleMeasurements:allMeasurements) {
-                                    list.add(singleMeasurements.getDewpoint());
-                                }
-                                Double fixedValue = dataCorrection.correctTheData(list);
-                                weatherMeasurement.setDewpoint(fixedValue);
-                            }
-                            break;
-                        case 2:
-                            //STP
-                            if (!correctDataSingle) {
-                                ArrayList<Double> list = new ArrayList<>();
-                                for (WeatherMeasurement singleMeasurements:allMeasurements) {
-                                    list.add(singleMeasurements.getAirPressureStationLevel());
-                                }
-                                Double fixedValue = dataCorrection.correctTheData(list);
-                                weatherMeasurement.setAirPressureStationLevel(fixedValue);
-                            }
-                            break;
-                        case 3:
-                            //SLP
-                            if (!correctDataSingle) {
-                                ArrayList<Double> list = new ArrayList<>();
-                                for (WeatherMeasurement singleMeasurements:allMeasurements) {
-                                    list.add(singleMeasurements.getAirPressureSeaLevel());
-                                }
-                                Double fixedValue = dataCorrection.correctTheData(list);
-                                weatherMeasurement.setAirPressureSeaLevel(fixedValue);
-                            }
-                            break;
-                        case 4:
-                            //VISIB
-                            if (!correctDataSingle) {
-                                ArrayList<Double> list = new ArrayList<>();
-                                for (WeatherMeasurement singleMeasurements:allMeasurements) {
-                                    list.add(singleMeasurements.getVisibility());
-                                }
-                                Double fixedValue = dataCorrection.correctTheData(list);
-                                weatherMeasurement.setVisibility(fixedValue);
-                            }
-                            break;
-                        case 5:
-                            //WDSP
-                            if (!correctDataSingle) {
-                                ArrayList<Double> list = new ArrayList<>();
-                                for (WeatherMeasurement singleMeasurements:allMeasurements) {
-                                    list.add(singleMeasurements.getWindSpeed());
-                                }
-                                Double fixedValue = dataCorrection.correctTheData(list);
-                                weatherMeasurement.setWindSpeed(fixedValue);
-                            }
-                            break;
-                        case 6:
-                            //PRCP
-                            if (!correctDataSingle) {
-                                ArrayList<Double> list = new ArrayList<>();
-                                for (WeatherMeasurement singleMeasurements:allMeasurements) {
-                                    list.add(singleMeasurements.getRainfall());
-                                }
-                                Double fixedValue = dataCorrection.correctTheData(list);
-                                weatherMeasurement.setRainfall(fixedValue);
-                            }
-                            break;
-                        case 7:
-                            //SNDP
-                            if (!correctDataSingle) {
-                                ArrayList<Double> list = new ArrayList<>();
-                                for (WeatherMeasurement singleMeasurements:allMeasurements) {
-                                    list.add(singleMeasurements.getSnowfall());
-                                }
-                                Double fixedValue = dataCorrection.correctTheData(list);
-                                weatherMeasurement.setSnowfall(fixedValue);
-                            }
-                            break;
-                        case 8:
-                            //FRSHTT
-                            if (!correctDataSingle) {
-                                String frshtt = allMeasurements.subList(allMeasurements.size()-2, allMeasurements.size()-1).get(0).getFRSHTT();
-                                weatherMeasurement.setFRSHTT(frshtt);
-                            }
-                            break;
-                        case 9:
-                            //CLDC
-                            if (!correctDataSingle) {
-                                ArrayList<Double> list = new ArrayList<>();
-                                for (WeatherMeasurement singleMeasurements:allMeasurements) {
-                                    list.add(singleMeasurements.getCloudy());
-                                }
-                                Double fixedValue = dataCorrection.correctTheData(list);
-                                weatherMeasurement.setCloudy(fixedValue);
-                            }
-                            break;
-                        case 10:
-                            //WINDDIR
-                            if (!correctDataSingle) {
-                                ArrayList<Double> list = new ArrayList<>();
-                                for (WeatherMeasurement singleMeasurements:allMeasurements) {
-                                    list.add(singleMeasurements.getWindDirection());
-                                }
-                                Double fixedValue = dataCorrection.correctTheData(list);
-                                weatherMeasurement.setWindDirection(fixedValue);
-                            }
-                            break;
-                    }
-                    aantal++;
+//                ArrayList<WeatherMeasurement> allMeasurements = weatherstations.get(stn).getSpecificNumberOfWeatherMeasurements(30);
+                allMeasurements = weatherstations.get(stn).getWeatherMeasurements();
+                System.out.println(weatherstations.get(stn).getWeatherMeasurements().size());
+                if(allMeasurements.size()>=30){
+                    weatherstations.get(stn).removeOldestValue();
+                    allMeasurements.remove(0);
+                    System.out.println("Reached 30 values so the oldest value will be removed");
                 }
 
 
@@ -350,6 +206,136 @@ public class SAXHandler extends DefaultHandler {
                     correctData.add(true);
                 }
             }
+            if (qName.equalsIgnoreCase("MEASUREMENT")) {
+                int aantal = 0;
+                if (allMeasurements.size() > 1) {
+                    System.out.println("test print plz do not ignore");
+                }
+                for (Boolean correctDataSingle : correctData) {
+                    switch (aantal) { //In this switch the data correction method is run on values if they are empty
+                        case 0:
+                            //TEMP
+                            if (!correctDataSingle) {
+                                System.out.println("YO WE ZIJN HIER");
+                                ArrayList<Double> list = new ArrayList<>();
+                                for (WeatherMeasurement singleMeasurements : allMeasurements) {
+                                    list.add(singleMeasurements.getTemperature());
+                                }
+                                Double fixedValue = dataCorrection.correctTheData(list);
+                                weatherMeasurement.setTemperature(fixedValue);
+                            }
+                            break;
+                        case 1:
+                            //DEWP
+                            if (!correctDataSingle) {
+                                ArrayList<Double> list = new ArrayList<>();
+                                for (WeatherMeasurement singleMeasurements : allMeasurements) {
+                                    list.add(singleMeasurements.getDewpoint());
+                                }
+                                Double fixedValue = dataCorrection.correctTheData(list);
+                                weatherMeasurement.setDewpoint(fixedValue);
+                            }
+                            break;
+                        case 2:
+                            //STP
+                            if (!correctDataSingle) {
+                                ArrayList<Double> list = new ArrayList<>();
+                                for (WeatherMeasurement singleMeasurements : allMeasurements) {
+                                    list.add(singleMeasurements.getAirPressureStationLevel());
+                                }
+                                Double fixedValue = dataCorrection.correctTheData(list);
+                                weatherMeasurement.setAirPressureStationLevel(fixedValue);
+                            }
+                            break;
+                        case 3:
+                            //SLP
+                            if (!correctDataSingle) {
+                                ArrayList<Double> list = new ArrayList<>();
+                                for (WeatherMeasurement singleMeasurements : allMeasurements) {
+                                    list.add(singleMeasurements.getAirPressureSeaLevel());
+                                }
+                                Double fixedValue = dataCorrection.correctTheData(list);
+                                weatherMeasurement.setAirPressureSeaLevel(fixedValue);
+                            }
+                            break;
+                        case 4:
+                            //VISIB
+                            if (!correctDataSingle) {
+                                ArrayList<Double> list = new ArrayList<>();
+                                for (WeatherMeasurement singleMeasurements : allMeasurements) {
+                                    list.add(singleMeasurements.getVisibility());
+                                }
+                                Double fixedValue = dataCorrection.correctTheData(list);
+                                weatherMeasurement.setVisibility(fixedValue);
+                            }
+                            break;
+                        case 5:
+                            //WDSP
+                            if (!correctDataSingle) {
+                                ArrayList<Double> list = new ArrayList<>();
+                                for (WeatherMeasurement singleMeasurements : allMeasurements) {
+                                    list.add(singleMeasurements.getWindSpeed());
+                                }
+                                Double fixedValue = dataCorrection.correctTheData(list);
+                                weatherMeasurement.setWindSpeed(fixedValue);
+                            }
+                            break;
+                        case 6:
+                            //PRCP
+                            if (!correctDataSingle) {
+                                ArrayList<Double> list = new ArrayList<>();
+                                for (WeatherMeasurement singleMeasurements : allMeasurements) {
+                                    list.add(singleMeasurements.getRainfall());
+                                }
+                                Double fixedValue = dataCorrection.correctTheData(list);
+                                weatherMeasurement.setRainfall(fixedValue);
+                            }
+                            break;
+                        case 7:
+                            //SNDP
+                            if (!correctDataSingle) {
+                                ArrayList<Double> list = new ArrayList<>();
+                                for (WeatherMeasurement singleMeasurements : allMeasurements) {
+                                    list.add(singleMeasurements.getSnowfall());
+                                }
+                                Double fixedValue = dataCorrection.correctTheData(list);
+                                weatherMeasurement.setSnowfall(fixedValue);
+                            }
+                            break;
+                        case 8:
+                            //FRSHTT
+                            if (!correctDataSingle) {
+                                String frshtt = allMeasurements.subList(allMeasurements.size() - 2, allMeasurements.size() - 1).get(0).getFRSHTT();
+                                weatherMeasurement.setFRSHTT(frshtt);
+                            }
+                            break;
+                        case 9:
+                            //CLDC
+                            if (!correctDataSingle) {
+                                ArrayList<Double> list = new ArrayList<>();
+                                for (WeatherMeasurement singleMeasurements : allMeasurements) {
+                                    list.add(singleMeasurements.getCloudy());
+                                }
+                                Double fixedValue = dataCorrection.correctTheData(list);
+                                weatherMeasurement.setCloudy(fixedValue);
+                            }
+                            break;
+                        case 10:
+                            //WINDDIR
+                            if (!correctDataSingle) {
+                                ArrayList<Double> list = new ArrayList<>();
+                                for (WeatherMeasurement singleMeasurements : allMeasurements) {
+                                    list.add(singleMeasurements.getWindDirection());
+                                }
+                                Double fixedValue = dataCorrection.correctTheData(list);
+                                weatherMeasurement.setWindDirection(fixedValue);
+                            }
+                            break;
+                    }
+                    aantal++;
+                }
+            }
+                weatherstation.addWeatherMeasurement(weatherMeasurement);
 //            for (WeatherMeasurement weatherMeasurement:
 //                    weatherstation.getWeatherMeasurements()) {
 //                //System.out.println("ding: " +weatherMeasurement.getStn() + "andere ding:" + weatherstation.stn);
