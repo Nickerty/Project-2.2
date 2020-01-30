@@ -11,7 +11,7 @@ function readTextFile(file, callback) {
 }
 
 function locationFromStn(stn) {
-    longlat = []
+    let longlat = []
     readTextFile("json/tbl_name.json", function (text) {
         var json = JSON.parse(text);
         json.forEach(function (allJson) {
