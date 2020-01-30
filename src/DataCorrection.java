@@ -52,11 +52,14 @@ public class DataCorrection {
             sum += temps.get(i);
         } //a sum is made of the first 30 values in the gven range, which is why you should strive to give this method lists that contain exactly 30 values
         Double avg = sum / temps.size(); //simple calculation to get the average value of the 30 values given
+        System.out.println("The current avg is : " + avg);
         Double maxTemp = (avg + (0.2 * avg)); //sets the max tolerable temperature
         Double minTemp = avg - (0.2 * avg); //sets the minimal tolerable temperature
         if (tempToCheck > maxTemp) { //if the checked temperature is greater than the max tolerable temp:
+            System.out.println("DEVIANT JESUS CHRIST. CORRECTING " + tempToCheck + " INTO " + maxTemp);
             tempToCheck = maxTemp; //then the temperature is a deviant, and will be corrected to the maximum tolerable value.
         } else if (tempToCheck < minTemp) { //same steps as for maxTemp, but applied to minTemp
+            System.out.println("DEVIANT JESUS CHRIST. CORRECTING " + tempToCheck + " INTO " + minTemp);
             tempToCheck = minTemp; //the deviant value is set to the minimal tolerable value
         }
         return tempToCheck; //the checked temperature is returned, possibly corrected

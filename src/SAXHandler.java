@@ -18,6 +18,8 @@ public class SAXHandler extends DefaultHandler {
     private Weatherstation weatherstation = null;
     private WeatherMeasurement weatherMeasurement = null;
     private ArrayList<Boolean> correctData = null;
+    private ArrayList<WeatherMeasurement> allMeasurements = new ArrayList<>();
+    ArrayList<Double> temperatureList = new ArrayList<>();
     private String elementValue;
     private boolean delete = false;
     String json = null; //TODO Private toevoegen?
@@ -27,7 +29,6 @@ public class SAXHandler extends DefaultHandler {
 
     /**
      * Constructor for the SAXHandler class
-     * @param merger Thread for merging of the data
      * @param mergeData Instance of the class MergeData which is run by the thread: merger.
      */
     public SAXHandler(MergeData mergeData) {
@@ -84,7 +85,6 @@ public class SAXHandler extends DefaultHandler {
     @Override
     public void endElement(String uri, String localName, String qName) {
         try {
-            ArrayList<WeatherMeasurement> allMeasurements = new ArrayList<>();
             if (qName.equalsIgnoreCase("STN")) {
                 int stn = (Integer.valueOf(elementValue));
                 boolean exists = false; //TODO de boolean exists wordt niet meer gebruikt?
@@ -104,11 +104,11 @@ public class SAXHandler extends DefaultHandler {
                 weatherMeasurement.setStn(Integer.valueOf(elementValue));   //Set the Stn variable of the weatherMeasurement to the corresponding one.
 //                ArrayList<WeatherMeasurement> allMeasurements = weatherstations.get(stn).getSpecificNumberOfWeatherMeasurements(30);
                 allMeasurements = weatherstations.get(stn).getWeatherMeasurements();
-                System.out.println(weatherstations.get(stn).getWeatherMeasurements().size());
+                //System.out.println("class ding size is " + weatherstations.get(stn).getWeatherMeasurements().size());
+                //System.out.println("array ding size is " + allMeasurements.size());
                 if(allMeasurements.size()>=30){
                     weatherstations.get(stn).removeOldestValue();
-                    allMeasurements.remove(0);
-                    System.out.println("Reached 30 values so the oldest value will be removed");
+                    //System.out.println("Reached 30 values so the oldest value will be removed");
                 }
 
 
@@ -209,7 +209,7 @@ public class SAXHandler extends DefaultHandler {
             if (qName.equalsIgnoreCase("MEASUREMENT")) {
                 int aantal = 0;
                 if (allMeasurements.size() > 1) {
-                    System.out.println("test print plz do not ignore");
+                    //System.out.println(allMeasurements.size());
                 }
                 for (Boolean correctDataSingle : correctData) {
                     switch (aantal) { //In this switch the data correction method is run on values if they are empty
@@ -272,12 +272,14 @@ public class SAXHandler extends DefaultHandler {
                         case 5:
                             //WDSP
                             if (!correctDataSingle) {
+                                //System.out.println("OH SHIT EEN FOUT WANT DE FILE IS " + weatherMeasurement.getWindSpeed());
                                 ArrayList<Double> list = new ArrayList<>();
                                 for (WeatherMeasurement singleMeasurements : allMeasurements) {
                                     list.add(singleMeasurements.getWindSpeed());
                                 }
                                 Double fixedValue = dataCorrection.correctTheData(list);
                                 weatherMeasurement.setWindSpeed(fixedValue);
+                                //System.out.println("SHIT IS FIXED WANT HET IS NU " + weatherMeasurement.getWindSpeed() + " (hoort " + fixedValue + " te zijn)");
                             }
                             break;
                         case 6:
@@ -334,8 +336,17 @@ public class SAXHandler extends DefaultHandler {
                     }
                     aantal++;
                 }
-            }
                 weatherstation.addWeatherMeasurement(weatherMeasurement);
+                temperatureList.add(weatherMeasurement.getTemperature());
+                if (temperatureList.size() == 31) {
+                    System.out.println(temperatureList);
+                    for (Double temp : temperatureList) {
+                        dataCorrection.correctTemperature(temperatureList, temp);
+                    }
+                    temperatureList.clear();
+                }
+                correctData.clear();
+            }
 //            for (WeatherMeasurement weatherMeasurement:
 //                    weatherstation.getWeatherMeasurements()) {
 //                //System.out.println("ding: " +weatherMeasurement.getStn() + "andere ding:" + weatherstation.stn);
