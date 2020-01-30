@@ -1,6 +1,8 @@
 
-import java.util.List;
-import java.util.ArrayList;
+
+import java.lang.reflect.*;
+import java.nio.file.*;
+import java.util.*;
 
 /**
  * The Weatherstation class is where we can store several weathermeasurement which belong to a specific instance of
@@ -51,7 +53,12 @@ public class Weatherstation {
      * @return all known weathermeasurements in form of an ArrayList
      */
     public ArrayList<WeatherMeasurement> getWeatherMeasurements() {
+//        System.out.println(weatherMeasurements.size());
         return weatherMeasurements;
+    }
+
+    public void removeOldestValue(){
+        weatherMeasurements.remove(0);
     }
 
     /**
@@ -59,9 +66,15 @@ public class Weatherstation {
      * @param aantal Used to tell the method how many values it must return
      * @return Depending on the "aantal" variable, the amount of values requested in form of an ArrayList
      */
-    public ArrayList<WeatherMeasurement> getSpecificNumberOfWeatherMeasurements(int aantal) {
-        List<WeatherMeasurement> thirtyValues = weatherMeasurements.subList(weatherMeasurements.size()-(1+aantal), weatherMeasurements.size()-1);
-        ArrayList<WeatherMeasurement> returnthis = new ArrayList<>(thirtyValues);
-        return returnthis;
-    }
+//    public ArrayList<WeatherMeasurement> getSpecificNumberOfWeatherMeasurements(int aantal) {
+//        ArrayList<WeatherMeasurement> returnthis = new ArrayList<WeatherMeasurement>();
+//        if(weatherMeasurements.size()<aantal){
+//            returnthis = weatherMeasurements;
+//        }
+//        else{
+//            List<WeatherMeasurement> thirtyValues = weatherMeasurements.subList(0, 30);
+//            returnthis.addAll(thirtyValues);
+//        }
+//        return returnthis;
+//    }
 }
