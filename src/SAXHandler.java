@@ -9,7 +9,7 @@ import java.util.*;
  * using methods from the DataCorrection class.
  *
  * @author Matthijs van der Wal, Anne de Graaff, Nick Scholma
- * @version 1.0
+ * @version 1.1
  * @since 24-1-2020
  */
 public class SAXHandler extends DefaultHandler {
@@ -212,7 +212,7 @@ public class SAXHandler extends DefaultHandler {
                         case 0:
                             //TEMP
                             if (!correctDataSingle) {
-//                                System.out.println("YO WE ZIJN HIER");
+                                System.out.println("YO WE ZIJN HIER");
                                 ArrayList<Double> list = new ArrayList<>();
                                 for (WeatherMeasurement singleMeasurements : allMeasurements) {
                                     list.add(singleMeasurements.getTemperature());
@@ -332,13 +332,15 @@ public class SAXHandler extends DefaultHandler {
                     }
                     aantal++;
                 }
-                weatherstation.addWeatherMeasurement(weatherMeasurement);
-                for(WeatherMeasurement singleMeasurement:allMeasurements){
-                    Double temp = singleMeasurement.getTemperature();
-                    System.out.println("Old:    "+temp);
-                    temperatureList.add(temp);
-                    Double correctedValue = dataCorrection.correctTemperature(temperatureList, temperatureList.get(temperatureList.size()-1));
-                    System.out.println("New:      "+ correctedValue);
+                //System.out.println(allMeasurements.size());
+                if (allMeasurements.size() >= 30) {
+                    for (WeatherMeasurement singleMeasurement : allMeasurements) {
+                        Double temp = singleMeasurement.getTemperature();
+                        //System.out.println("Old:    " + temp);
+                        temperatureList.add(temp);
+                    }
+                    Double correctedValue = dataCorrection.correctTemperature(temperatureList, temperatureList.get(temperatureList.size() - 1));
+                    weatherMeasurement.setTemperature(correctedValue);
                     temperatureList.clear();
                 }
 
@@ -349,6 +351,7 @@ public class SAXHandler extends DefaultHandler {
 //                    }
 
 //                }
+                weatherstation.addWeatherMeasurement(weatherMeasurement);
                 correctData.clear();
             }
 //            for (WeatherMeasurement weatherMeasurement:
