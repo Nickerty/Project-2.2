@@ -91,14 +91,14 @@ echo "
           valueField: 'count'
         };
 
-
+        var heatmapLayer = new HeatmapOverlay(cfg);
 
         var map = new L.Map('map', {
           center: new L.LatLng(24.5317303, -89.8435541),
           zoom: 5,
           layers: [baseLayer, heatmapLayer]
         });
-        var animate = function() {var heatmapLayer = new HeatmapOverlay(cfg);";
+        var animate = function() {";
             foreach ($weatherStations as $weatherStation) {
                     echo "heatmapLayer.addData({lat: " . getLocation($weatherStation["stn"], $dataRow)[0] . ", lng: " . getLocation($weatherStation["stn"], $dataRow)[1] . ", count: " . intval(getTemperature2($weatherStation["stn"], $decodedTotal)) . "});\n";
                     echo "console.log('oef'); \n";
