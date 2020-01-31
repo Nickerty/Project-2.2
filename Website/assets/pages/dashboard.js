@@ -138,7 +138,8 @@ var chart = new ApexCharts(
   document.querySelector("#area-chart"),
   options
 );
-    
+
+
 chart.render();
 
 
