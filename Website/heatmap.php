@@ -101,7 +101,7 @@ echo "
         });
         var animate = function() {";
             foreach ($weatherStations as $weatherStation) {
-                    echo "heatmapLayer.addData({lat: " . getLocation($weatherStation["stn"], $dataRow)[0] . ", lng: " . getLocation($weatherStation["stn"], $dataRow)[1] . ", count: " . intval(getTemperature2($weatherStation["stn"], $decodedTotal)) . "});\n";
+                    echo "heatmapLayer.setData({lat: " . getLocation($weatherStation["stn"], $dataRow)[0] . ", lng: " . getLocation($weatherStation["stn"], $dataRow)[1] . ", count: " . intval(getTemperature2($weatherStation["stn"], $decodedTotal)) . "});\n";
                     echo "console.log('oef'); \n";
             }
             echo "};
