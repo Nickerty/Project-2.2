@@ -333,14 +333,22 @@ public class SAXHandler extends DefaultHandler {
                     aantal++;
                 }
                 weatherstation.addWeatherMeasurement(weatherMeasurement);
-                temperatureList.add(weatherMeasurement.getTemperature());
-                if (temperatureList.size() == 31) {
-//                    System.out.println(temperatureList);
-                    for (Double temp : temperatureList) {
-                        dataCorrection.correctTemperature(temperatureList, temp);
-                    }
+                for(WeatherMeasurement singleMeasurement:allMeasurements){
+                    Double temp = singleMeasurement.getTemperature();
+                    System.out.println("Old:    "+temp);
+                    temperatureList.add(temp);
+                    Double correctedValue = dataCorrection.correctTemperature(temperatureList, temperatureList.get(temperatureList.size()-1));
+                    System.out.println("New:      "+ correctedValue);
                     temperatureList.clear();
                 }
+
+//                if (temperatureList.size() == 30) {
+//                    System.out.println(temperatureList);
+//                    for (Double temp : temperatureList) {
+//                        dataCorrection.correctTemperature(temperatureList, temp);
+//                    }
+
+//                }
                 correctData.clear();
             }
 //            for (WeatherMeasurement weatherMeasurement:
