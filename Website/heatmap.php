@@ -101,8 +101,10 @@ echo "
         });
         var animate = function() {";
             foreach ($weatherStations as $weatherStation) {
-		echo "heatmapLayer.addData({lat: ".getLocation($weatherStation["stn"], $dataRow)[0].", lng: ".getLocation($weatherStation["stn"], $dataRow)[1].", count: ".getTemperature2($weatherStation["stn"], $decodedTotal)."});\n";
-                echo "console.log('oef'); \n";
+                if (!is_nan($weatherStation . getTemperature2($weatherStation["stn"], $decodedTotal))) {
+                    echo "heatmapLayer.addData({lat: " . getLocation($weatherStation["stn"], $dataRow)[0] . ", lng: " . getLocation($weatherStation["stn"], $dataRow)[1] . ", count: " . getTemperature2($weatherStation["stn"], $decodedTotal) . "});\n";
+                    echo "console.log('oef'); \n";
+                }
             }
             echo "};
 
