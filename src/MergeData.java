@@ -21,6 +21,7 @@ public class MergeData implements Runnable {
     private volatile ConcurrentHashMap<Integer, Weatherstation> tempData;
     private int amountOfData = 0;
     private int fileNumber = 0;
+    private int delayCounter = 0;
     /**
      * Constructor for the MergeData class
      */
@@ -39,49 +40,61 @@ public class MergeData implements Runnable {
 //Checks if there is any data ready to get merged
 //                adjustData("Clear", getData());                                                          //Puts all the data in temporary list to work with, makes the source list empty
                 ConcurrentHashMap<Integer, Weatherstation> dataOut = new ConcurrentHashMap<>();
-                for(Weatherstation dataSingle:tempData.values()){                                                   //For every Weatherstation in the new data:
+                for (Weatherstation dataSingle : tempData.values()) {                                                   //For every Weatherstation in the new data:
                     ArrayList<WeatherMeasurement> measurementList = new ArrayList<>(dataSingle.getWeatherMeasurements());       //Make list for all Measurements of the selected Weatherstation
 //                    for (WeatherMeasurement measurementListItem : measurementList) {                           //Loop trough all the weather measurements:
-                    WeatherMeasurement measurementListItem = measurementList.get(measurementList.size() - 1);
-                    boolean isGefixt = false;                                                              //Variable to keep track if there is already a weatherstation saved which belongs to the currently receiving measurment
-                    boolean stop = false;                                                                  //Variable to keep track if the currently receiving measurement is a duplicate.
-                    int measurementId = measurementListItem.getStn();                                      //Get id of the station which belongs to the measurement
-                    if (dataOut.containsKey(measurementId)) {
-                        Weatherstation weatherstation = tempData.get(measurementId);             //Get the already received measurements from a particular weatherstation
-                        if (!weatherstation.getWeatherMeasurements().isEmpty()) {
-                            ArrayList<WeatherMeasurement> weatherMeasurementArrayList = new ArrayList<>(weatherstation.getWeatherMeasurements());
-                            for (WeatherMeasurement singleWeatherMeasurement : weatherMeasurementArrayList) {                        //Loop trough all the measurements of a particular weatherstation
-                                if (singleWeatherMeasurement.getTime().equals(measurementListItem.getTime())) {                           //Check if the time of arrival is the same as the currently receiving measurement:
-                                    stop = true;                                                                                    //Because this means this is a duplicate of a measurement it not need to be saved.
+                    if (measurementList.size() >= 1) {
+                        int maxTillTen = 10;
+                        if (measurementList.size() < 10) {
+                            maxTillTen = measurementList.size();
+                        }
+                        WeatherMeasurement measurementItem = measurementList.get(0);
+                        int measurementId = measurementItem.getStn();
+                        Weatherstation tempStation = new Weatherstation(measurementId);                                    //Get id of the station which belongs to the measurement
+                        for (int count = 0; count < maxTillTen; count++) {
+                            WeatherMeasurement measurementListItem = measurementList.get(measurementList.size() - (1 + count));
+                            boolean isGefixt = false;                                                              //Variable to keep track if there is already a weatherstation saved which belongs to the currently receiving measurment
+                            boolean stop = false;                                                                  //Variable to keep track if the currently receiving measurement is a duplicate.
+                            if (dataOut.containsKey(measurementId)) {
+                                Weatherstation weatherstation = tempData.get(measurementId);             //Get the already received measurements from a particular weatherstation
+                                if (!weatherstation.getWeatherMeasurements().isEmpty()) {
+                                    ArrayList<WeatherMeasurement> weatherMeasurementArrayList = new ArrayList<>(weatherstation.getWeatherMeasurements());
+                                    for (WeatherMeasurement singleWeatherMeasurement : weatherMeasurementArrayList) {                        //Loop trough all the measurements of a particular weatherstation
+                                        if (singleWeatherMeasurement.getTime().equals(measurementListItem.getTime())) {                           //Check if the time of arrival is the same as the currently receiving measurement:
+                                            stop = true;                                                                                    //Because this means this is a duplicate of a measurement it not need to be saved.
+                                        }
+                                    }
                                 }
+                                if (!stop) {                                                                    //Checks if the currently receiving measurement is not a duplicate.
+//                            weatherstation.addWeatherMeasurement(measurementListItem);                 //Adds measurement to the correct station.
+                                    tempStation.addWeatherMeasurement(measurementListItem);
+//                                System.out.println(weatherstation.getWeatherMeasurements().size());
+                                }
+                                isGefixt = true;                                                               //Variable to keep track if there is already a weatherstation saved which belongs to the currently receiving measurment
+                            }
+                            if (!isGefixt) {                                                                         //Checks if all measurements where allocated to the corresponding weatherstation, if not:
+                                tempStation.addWeatherMeasurement(measurementListItem);                      //The corresponding measurement will linked to it
+                                //System.out.println("First/Duplicate measure");
                             }
                         }
-                        if (!stop) {                                                                    //Checks if the currently receiving measurement is not a duplicate.
-//                            weatherstation.addWeatherMeasurement(measurementListItem);                 //Adds measurement to the correct station.
-                            Weatherstation tempStation = new Weatherstation(measurementId);
-                            tempStation.addWeatherMeasurement(measurementListItem);
-                            dataOut.put(measurementId, tempStation);
-//                                System.out.println(weatherstation.getWeatherMeasurements().size());
+                        dataOut.put(measurementId, tempStation);                                                //Add data to a specific ID in the Hashmap
+                    }
+                }
+
+
+                if (delayCounter >= 10) {
+                    int counter = 0;
+                    for (Weatherstation weatherstation : dataOut.values()) {
+                        for (WeatherMeasurement weatherMeasurement : weatherstation.getWeatherMeasurements()) {
+                            counter += 1;
                         }
-                        isGefixt = true;                                                               //Variable to keep track if there is already a weatherstation saved which belongs to the currently receiving measurment
                     }
-                    if (!isGefixt) {                                                                         //Checks if all measurements where allocated to the corresponding weatherstation, if not:
-                        Weatherstation newWeatherStation = new Weatherstation(measurementId);              //A new weatherstation would be made
-                        newWeatherStation.addWeatherMeasurement(measurementListItem);                      //The corresponding measurement will linked to it
-                        dataOut.put(measurementId, newWeatherStation);               //Add data to a specific ID in the Hashmap
-                        //System.out.println("First/Duplicate measure");
-                    }
+                    System.out.println(counter);
+                    writeToJsonFIle(dataOut);
+                    this.tempData.clear();
+                    dataOut.clear();
+                    delayCounter = 0;
                 }
-                int counter = 0;
-                for (Weatherstation weatherstation : dataOut.values()) {
-                    for (WeatherMeasurement weatherMeasurement : weatherstation.getWeatherMeasurements()) {
-                        counter += 1;
-                    }
-                }
-                System.out.println(counter);
-                writeToJsonFIle(dataOut);
-                this.tempData.clear();
-                dataOut.clear();
             }
         }
     }
@@ -91,14 +104,15 @@ public class MergeData implements Runnable {
      * @param data The data which the method needs to do something with
      */
     public synchronized void adjustData(HashMap<Integer, Weatherstation> data) {
-            this.weatherstationById.putAll(data);               //Adds all received data to existing Hashmap
-            amountOfData++;
+        this.weatherstationById.putAll(data);               //Adds all received data to existing Hashmap
+        amountOfData++;
 
-            if(amountOfData >= 800) {
-                this.tempData.putAll(this.weatherstationById);
-                this.weatherstationById.clear();
-                amountOfData = 0;
-            }
+        if(amountOfData >= 800) {
+            this.tempData.putAll(this.weatherstationById);
+            this.weatherstationById.clear();
+            amountOfData = 0;
+            delayCounter+=1;
+        }
     }
 
 
@@ -125,14 +139,15 @@ public class MergeData implements Runnable {
     public synchronized void writeToJsonFIle(ConcurrentHashMap dataOut) {
 
         try {
-            System.out.println("Writing to file: ding"+fileNumber+".json");
-            PrintWriter writer = new PrintWriter("ding"+fileNumber+".json", "UTF-8");
+            System.out.println("Writing to file: ding" + 100000 + fileNumber + ".json");
+            PrintWriter writer = new PrintWriter("File" + 100000 + fileNumber + ".json", "UTF-8");
             System.out.println("Size: " + dataOut.size());
             String data = new Gson().toJson(dataOut);
             writer.println(data);
             writer.close();
             fileNumber++;
-        } catch(FileNotFoundException | UnsupportedEncodingException e) {
+            this.delayCounter = 0;
+        } catch (FileNotFoundException | UnsupportedEncodingException e) {
             System.out.println(e);
         }
 
