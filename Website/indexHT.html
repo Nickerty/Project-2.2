@@ -59,7 +59,7 @@
                             <li class="menu-title">Anviwònman</li>
                             <li>
                                 <a href="index.html" class="waves-effect">
-                                    <i class="fas fa-chart-line"></i><span class="badge badge-success badge-pill float-right">COOLIO</span> <span> Dashboard </span>
+                                    <i class="fas fa-chart-line"></i><span class="badge badge-success badge-pill float-right">Start</span> <span> Dashboard </span>
                                 </a>
                             </li>
                         </ul>
@@ -84,10 +84,10 @@
                         <div class="page-title-box">
                             <div class="row align-items-center">
                                 <div class="col-sm-6">
-                                    <h4 class="page-title">Dash</h4>
+                                    <h4 class="page-title">Dashboard</h4>
                                     <ol class="breadcrumb">
                                         <!-- <li class="breadcrumb-item"><a href="javascript:void(0);"><i class="mdi mdi-home-outline"></i></a></li> -->
-                                        <li class="breadcrumb-item active">HEYHOI</li>
+                                        <li class="breadcrumb-item active">Dash</li>
                                     </ol>
                                 </div>
                                 <div class="col-sm-6">
@@ -97,20 +97,20 @@
                                                 <i class="fas fa-cog"></i> Anviwònman
                                             </button>
                                             <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item" href="index.html#">ENG</a>
-                                                <a class="dropdown-item" href="indexNL.html#">NL</a>
-                                                <a class="dropdown-item" href="indexHT.html#">HT</a>
+                                                <a class="dropdown-item" href="indexHT.html">HT</a>
+                                                <a class="dropdown-item" href="indexNL.html">NL</a>
+                                                <a class="dropdown-item" href="index.html">ENG</a>
                                                 <div class="dropdown-divider"></div>
                                                 <a class="dropdown-item" href="#">°F</a>
                                                 <a class="dropdown-item" href="#">°C</a>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-8">
                                         <div class="float-right d-none d-md-block">
                                             <div class="button-items">
                                                 <button class="btn btn-primary" type="button" data-toggle="button" >
-                                                    <i class="fas"></i> ekspòtasyon done
+                                                    <i class="fas"></i> Ekspòtasyon done
                                                 </button>
                                                 </div>
                                             </div>
@@ -130,7 +130,7 @@
                                         </div>
                                         <h6 class="text-uppercase mb-3 mt-0">Lapli</h6>
                                         <h5 class="mb-3">1,687 MM</h5>
-                                        <p class="text-muted mb-0"><span class="text-success mr-2"> 12% <i class="mdi mdi-arrow-up"></i> </span> From previous period</p>
+                                        <p class="text-muted mb-0"><span class="text-success mr-2"> 12% <i class="mdi mdi-arrow-up"></i> </span> Konpare ak peryòd anvan yo</p>
                                     </div>
                                 </div>
                             </div>
@@ -142,23 +142,12 @@
                                         </div>
                                         <h6 class="text-uppercase mb-3 mt-0">Tanperati</h6>
                                         <h5 class="mb-3">23 °C</h5>
-                                        <p class="text-muted mb-0"><span class="text-danger mr-2"> -26% <i class="mdi mdi-arrow-down"></i> </span> From previous period</p>
+                                        <p class="text-muted mb-0"><span class="text-danger mr-2"> -26% <i class="mdi mdi-arrow-down"></i> </span> Konpare ak peryòd anvan yo</p>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
-                                <div class="card mini-stat bg-pattern">
-                                    <div class="card-body mini-stat-img">
-                                        <div class="mini-stat-icon">
-                                            <i class="fas fa-wind fa-2x"></i>
-                                        </div>
-                                        <h6 class="text-uppercase mb-3 mt-0">Vitès van</h6>
-                                        <h5 class="mb-3">14.6</h5>
-                                        <p class="text-muted mb-0"><span class="text-danger mr-2"> -26% <i class="mdi mdi-arrow-down"></i> </span> From previous period</p>
-                                    </div>
-                                </div>
+
                             </div>
-                        </div>
                         <!-- end row -->
 
                         <div class="row">
@@ -175,49 +164,39 @@
                             <div class="col-xl-8">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h4 class="mt-0 header-title mb-4">graf ba</h4>
-                                        
-                                        <div id="column-chart" dir="ltr"></div>
+                                        <h4 class="mt-0 header-title mb-4">Plan chalè</h4>
+                                        <iframe src="heatmap.php" width="100%" height="300px" style="border: none"></iframe>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <!-- end row -->
 
-                        <div class="row">
-                            <div class="col-xl-8">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h4 class="mt-0 header-title mb-4">Plan chalè</h4>
-                                        <div id="world-map-markers" class="dashboard-map-wid"></div>
-    
-                                    </div>
-                                </div>
-                            </div>
+
                             <!-- end col -->
-                            <div class="col-xl-4">
+                            <div class="col-xl-8">
                                 <div class="card messages">
                                     <div class="card-body">
-                                        <h4 class="mt-0 header-title mb-4">Table Top-10</h4>
+                                        <h4 class="mt-0 header-title mb-4">Top-10 jou pi cho</h4>
                                         <div class="table-rep-plugin">
                                             <div class="table-responsive mb-0" data-pattern="priority-columns">
                                                 <table id="tech-companies-1" class="table table-striped">
                                                     <thead>
                                                     <tr>
-                                                        <th>Place</th>
-                                                        <th data-priority="1">tanperati</th>
-                                                        <th data-priority="3">kote</th>
+                                                        <th>Estasyon</th>
+                                                        <th data-priority="1">tanperati (°C)</th>
+                                                        <th data-priority="3">Kote</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
                                                     <tr>
                                                         <th>LOC <span class="co-name">TEST</span></th>
-                                                        <td>35.54</td>
+                                                        <td>35.54 °C</td>
                                                         <td>PLACE</td>
                                                     </tr>
                                                     <tr>
                                                         <th>LOC<span class="co-name">TEST2</span></th>
-                                                        <td>378.94</td>
+                                                        <td>378.94 °C</td>
                                                         <td>PLACE</td>
                                                     </tr>
                                                     </tbody>

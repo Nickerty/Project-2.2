@@ -18,85 +18,85 @@ $('#date-pick-widget').datepicker({
 //var cdata = {"US": "35", "NO": "15", "SE": "17", "GB": "20", "ES": "10"}
 //$(function(){
 
-// $.getJSON('cdata2.json', function(cdata){
-//     $('#world-map-markers').vectorMap({
-//         map: 'world_mill_en',
-//         series: {
-//             //this is the object for passing country/region data into
-//             regions: [{
-//                 //define the range of color values
-//                 scale: ['#DEEBF7', '#08519C'],
-//                 //define the function that maps data to color range
-//                 normalizeFunction: 'linear',
-//                 //define the coloration method
-//                 attribute: 'fill',
-//                 //define the array of country data
-//                 values: cdata
-//             }]
-//         },
-//     });
-//     setInterval(function(){
-//         $.getJSON('data/cdata2.json', function(cdata){
-//             var map = $('.map1').vectorMap('get', 'mapObject');
-//             map.series.regions[0].setValues(cdata);
-//         })
-//     }, 10000);
-// })
+$.getJSON('cdata2.json', function(cdata){
+    $('#world-map-markers').vectorMap({
+        map: 'world_mill_en',
+        series: {
+            //this is the object for passing country/region data into
+            regions: [{
+                //define the range of color values
+                scale: ['#DEEBF7', '#08519C'],
+                //define the function that maps data to color range
+                normalizeFunction: 'linear',
+                //define the coloration method
+                attribute: 'fill',
+                //define the array of country data
+                values: cdata
+            }]
+        },
+    });
+    setInterval(function(){
+        $.getJSON('data/cdata2.json', function(cdata){
+            var map = $('.map1').vectorMap('get', 'mapObject');
+            map.series.regions[0].setValues(cdata);
+        })
+    }, 10000);
+})
 
 
-$('#world-map-markers').vectorMap({
-   map : 'world_mill_en',
-   scaleColors : ['rgba(255, 255, 255,0.55)', 'rgba(255, 255, 255,0.55)'],
-   normalizeFunction : 'polynomial',
-   hoverOpacity : 0.7,
-   hoverColor : false,
-   regionStyle : {
-       initial : {
-           fill : '#d5e7f2'
-       }
-   },
-   moarkerStyle: {
-           initial: {
-               r: 5,
-               'fill': '#e74c5e',
-               'fill-pacity': 0.9,
-           'stroke': '#fff',
-           'stroke-width' : 4,
-           'stroke-opacity': 0.4
-       },
-
-       hover: {
-           'stroke': '#fff',
-           'fill-opacity': 1,
-           'stroke-width': 2,
-       }
-   },
-   backgroundColor : 'transparent',
-   markers : [ {
-       latLng : [61.52, 105.31],
-       name : 'Russia'
-   }, {
-       latLng : [-25.27, 133.77],
-       name : 'Australia'
-   },  {
-       latLng : [20.59, 78.96],
-       name : 'India'
-   }, {
-       latLng : [39.52, -87.12],
-       name : 'Brazil'
-   }],
-   series: {
-       regions: [{
-           values: {
-               "US": 'rgba(223,0,6,0.3)',
-               "AU": 'rgba(64, 144, 203, 0.3)',
-               "IN": 'rgba(64, 144, 203, 0.3)',
-               "RU": 'rgba(64, 144, 203, 0.3)',
-           },
-           attribute: 'fill'
-       }]
-   },
-});
+// $('#world-map-markers').vectorMap({
+//    map : 'world_mill_en',
+//    scaleColors : ['rgba(255, 255, 255,0.55)', 'rgba(255, 255, 255,0.55)'],
+//    normalizeFunction : 'polynomial',
+//    hoverOpacity : 0.7,
+//    hoverColor : false,
+//    regionStyle : {
+//        initial : {
+//            fill : '#d5e7f2'
+//        }
+//    },
+//    moarkerStyle: {
+//            initial: {
+//                r: 5,
+//                'fill': '#e74c5e',
+//                'fill-pacity': 0.9,
+//            'stroke': '#fff',
+//            'stroke-width' : 4,
+//            'stroke-opacity': 0.4
+//        },
+//
+//        hover: {
+//            'stroke': '#fff',
+//            'fill-opacity': 1,
+//            'stroke-width': 2,
+//        }
+//    },
+//    backgroundColor : 'transparent',
+//    markers : [ {
+//        latLng : [61.52, 105.31],
+//        name : 'Russia'
+//    }, {
+//        latLng : [-25.27, 133.77],
+//        name : 'Australia'
+//    },  {
+//        latLng : [20.59, 78.96],
+//        name : 'India'
+//    }, {
+//        latLng : [39.52, -87.12],
+//        name : 'Brazil'
+//    }],
+//    series: {
+//        regions: [{
+//            values: {
+//                "US": 'rgba(223,0,6,0.3)',
+//                "AU": 'rgba(64, 144, 203, 0.3)',
+//                "IN": 'rgba(64, 144, 203, 0.3)',
+//                "RU": 'rgba(64, 144, 203, 0.3)',
+//            },
+//            attribute: 'fill'
+//        }]
+//    },
+// });
 
 
 /********** Area chart ********/
@@ -122,11 +122,8 @@ var options = {
   }, {
       name: 'Temperature (C)',
       data: [11, 32, 60, 32, 34]
-  },{
-      name: 'Windspeed',
-      data: [11, 32, 60, 32, 42]
   }],
-  colors: ['#4090cb', '#e74c5e', "#29cb1c"],
+  colors: ['#4090cb', '#e74c5e'],
 
   grid: {
     yaxis: {
@@ -181,7 +178,7 @@ var options = {
     labels: {
       rotate: -90
     },
-    categories: ['Dag1', 'Dag2', 'Dag3', 'Dag4', 'Dag5', 'Dag6', 'Dag7']
+    categories: ['Day1', 'Day2', 'Day3', 'Day4', 'Day5', 'Day6', 'Day7']
   },
   colors: ['#e74c5e'],
 
