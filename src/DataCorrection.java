@@ -42,7 +42,7 @@ public class DataCorrection {
      * Method which checks and corrects the given temperature (in °C) if that value diverges for an amount greater than
      * 20% of the average value of the given temperature range. This method should only be used on temperature values!
      *
-     * @param temps       An ArrayList of preferably 30 Double values reperesenting temperature, which will be used to calculate the acceptable range of temperatures.
+     * @param temps       An ArrayList of preferably 30 Double values representing temperature, which will be used to calculate the acceptable range of temperatures.
      * @param tempToCheck The Double value representing a temperature that you want to check to see if it is a divergent deviant.
      * @return returns the checked temperature as an Double, which has been corrected if it was found to be a deviant.
      */
@@ -50,11 +50,16 @@ public class DataCorrection {
         Double sum = 0.0;
         for (int i = 0; i < 30; i++) {
             sum += temps.get(i);
-        } //a sum is made of the first 30 values in the gven range, which is why you should strive to give this method lists that contain exactly 30 values
+        } //a sum is made of the first 30 values in the given range, which is why you should strive to give this method lists that contain exactly 30 values
         Double avg = sum / temps.size(); //simple calculation to get the average value of the 30 values given
 //        System.out.println("The current avg is : " + avg);
         Double maxTemp = (avg + (0.2 * avg)); //sets the max tolerable temperature
         Double minTemp = avg - (0.2 * avg); //sets the minimal tolerable temperature
+        if (avg < 0) {
+            Double temTemp = maxTemp;
+            maxTemp = minTemp;
+            minTemp = temTemp;
+        }
         if (tempToCheck > maxTemp) { //if the checked temperature is greater than the max tolerable temp:
 //            System.out.println("DEVIANT JESUS CHRIST. CORRECTING " + tempToCheck + " INTO " + maxTemp);
             tempToCheck = maxTemp; //then the temperature is a deviant, and will be corrected to the maximum tolerable value.

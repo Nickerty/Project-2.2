@@ -19,7 +19,7 @@ public class SAXHandler extends DefaultHandler {
     private WeatherMeasurement weatherMeasurement = null;
     private ArrayList<Boolean> correctData = null;
     private ArrayList<WeatherMeasurement> allMeasurements = new ArrayList<>();
-    ArrayList<Double> temperatureList = new ArrayList<>();
+    private ArrayList<Double> temperatureList = new ArrayList<>();
     private String elementValue;
     private boolean delete = false;
     String json = null; //TODO Private toevoegen?
@@ -360,7 +360,7 @@ public class SAXHandler extends DefaultHandler {
      * @param ch List of characters
      * @param start The start position in the character array
      * @param length The number of characters to use from the character array
-     * @throws SAXException When something goes wrong during the pasing process a SAXException well be thrown
+     * @throws SAXException When something goes wrong during the passing process a SAXException well be thrown
      */
     @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
