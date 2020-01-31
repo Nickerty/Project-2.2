@@ -69,10 +69,6 @@ public class SAXHandler extends DefaultHandler {
      */
     @Override
     public void startElement(String uri, String localname, String qName, Attributes attributes) throws SAXException {
-//        if (qName.equalsIgnoreCase("MEASUREMENT")) {
-//            weatherstation = new Weatherstation();
-//        }
-
     }
 
     /**
@@ -206,7 +202,7 @@ public class SAXHandler extends DefaultHandler {
                     correctData.add(true);
                 }
             }
-            if (qName.equalsIgnoreCase("MEASUREMENT")) {
+            else if (qName.equalsIgnoreCase("MEASUREMENT")) {
                 int aantal = 0;
                 if (allMeasurements.size() > 1) {
                     //System.out.println(allMeasurements.size());
@@ -216,7 +212,7 @@ public class SAXHandler extends DefaultHandler {
                         case 0:
                             //TEMP
                             if (!correctDataSingle) {
-                                System.out.println("YO WE ZIJN HIER");
+//                                System.out.println("YO WE ZIJN HIER");
                                 ArrayList<Double> list = new ArrayList<>();
                                 for (WeatherMeasurement singleMeasurements : allMeasurements) {
                                     list.add(singleMeasurements.getTemperature());
@@ -339,7 +335,7 @@ public class SAXHandler extends DefaultHandler {
                 weatherstation.addWeatherMeasurement(weatherMeasurement);
                 temperatureList.add(weatherMeasurement.getTemperature());
                 if (temperatureList.size() == 31) {
-                    System.out.println(temperatureList);
+//                    System.out.println(temperatureList);
                     for (Double temp : temperatureList) {
                         dataCorrection.correctTemperature(temperatureList, temp);
                     }
