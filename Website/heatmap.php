@@ -106,7 +106,11 @@ echo "
             }
             echo "};
 
+        setTimeout(function test() {
+          var timeout = 1000;
           animate();
+          setTimeout(test, timeout);
+        }, 100);
 
         // make accessible for debugging
         layer = heatmapLayer;
