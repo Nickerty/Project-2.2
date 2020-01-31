@@ -48,7 +48,7 @@ public class DataCorrection {
      */
     public Double correctTemperature(ArrayList<Double> temps, Double tempToCheck) {
         Double sum = 0.0;
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < temps.size(); i++) {
             sum += temps.get(i);
         } //a sum is made of the first 30 values in the given range, which is why you should strive to give this method lists that contain exactly 30 values
         Double avg = sum / temps.size(); //simple calculation to get the average value of the 30 values given
