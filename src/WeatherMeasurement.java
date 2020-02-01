@@ -1,8 +1,8 @@
 import java.util.*;
 
 /**
- * The WeatherMeasurement class is where we can store values for several weathervariables. Instances of this class
- * are linked to weatherstations.
+ * The WeatherMeasurement class is where we can store values for several weather variables. Instances of this class
+ * are linked to Weatherstations.
  *
  * @author Matthijs van der Wal
  * @version 1.0

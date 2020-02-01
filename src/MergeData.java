@@ -6,8 +6,8 @@ import java.util.concurrent.*;
 
 /**
  * The MergeData class is responsible for the merging phase of all the incoming data. Once data needs to get merged
- * this class will handle it. The 800 threads who handle the incoming data just put their data in this class.
- * The merging itself is handled by a single thread which will just copy the data, remove the old, and merge it.
+ * this class will handle it. The 800 threads which handle the incoming data put their data in this class.
+ * The merging itself is handled by a single thread which will copy the data, remove the old, and then merge it.
  *
  * @author Matthijs van der Wal, Anne de Graaff
  * @version 1.0
@@ -16,7 +16,6 @@ import java.util.concurrent.*;
 
 public class MergeData implements Runnable {
 
-    int temp = 0;
     private volatile ConcurrentHashMap<Integer, Weatherstation> weatherstationById;
     private volatile ConcurrentHashMap<Integer, Weatherstation> tempData;
     private int amountOfData = 0;
@@ -37,12 +36,10 @@ public class MergeData implements Runnable {
     public void run() {
         while (true) {
             while (!tempData.isEmpty()) {
-//Checks if there is any data ready to get merged
-//                adjustData("Clear", getData());                                                          //Puts all the data in temporary list to work with, makes the source list empty
                 ConcurrentHashMap<Integer, Weatherstation> dataOut = new ConcurrentHashMap<>();
                 for (Weatherstation dataSingle : tempData.values()) {                                                   //For every Weatherstation in the new data:
                     ArrayList<WeatherMeasurement> measurementList = new ArrayList<>(dataSingle.getWeatherMeasurements());       //Make list for all Measurements of the selected Weatherstation
-//                    for (WeatherMeasurement measurementListItem : measurementList) {                           //Loop trough all the weather measurements:
+
                     if (measurementList.size() >= 1) {
                         int maxTillTen = 10;
                         if (measurementList.size() < 10) {
@@ -66,21 +63,17 @@ public class MergeData implements Runnable {
                                     }
                                 }
                                 if (!stop) {                                                                    //Checks if the currently receiving measurement is not a duplicate.
-//                            weatherstation.addWeatherMeasurement(measurementListItem);                 //Adds measurement to the correct station.
                                     tempStation.addWeatherMeasurement(measurementListItem);
-//                                System.out.println(weatherstation.getWeatherMeasurements().size());
                                 }
                                 isGefixt = true;                                                               //Variable to keep track if there is already a weatherstation saved which belongs to the currently receiving measurment
                             }
                             if (!isGefixt) {                                                                         //Checks if all measurements where allocated to the corresponding weatherstation, if not:
-                                tempStation.addWeatherMeasurement(measurementListItem);                      //The corresponding measurement will linked to it
-                                //System.out.println("First/Duplicate measure");
+                                tempStation.addWeatherMeasurement(measurementListItem);                      //The corresponding measurement will be linked to it
                             }
                         }
-                        dataOut.put(measurementId, tempStation);                                                //Add data to a specific ID in the Hashmap
+                        dataOut.put(measurementId, tempStation);                                                //Add data to a specific ID in the HashMap
                     }
                 }
-
 
                 if (delayCounter >= 10) {
                     int counter = 0;
@@ -89,7 +82,7 @@ public class MergeData implements Runnable {
                             counter += 1;
                         }
                     }
-                    System.out.println(counter);
+                    System.out.println(counter); //TODO: is deze print nodig/handig?
                     writeToJsonFIle(dataOut);
                     this.tempData.clear();
                     dataOut.clear();
@@ -100,11 +93,11 @@ public class MergeData implements Runnable {
     }
 
     /**
-     * Method for adjusting the hashmap: weatherstationById
-     * @param data The data which the method needs to do something with
+     * Method for adjusting the HashMap: weatherstation ById
+     * @param data The data, consisting of a HashMap of weatherstations keyed by their STN, which this method uses
      */
     public synchronized void adjustData(HashMap<Integer, Weatherstation> data) {
-        this.weatherstationById.putAll(data);               //Adds all received data to existing Hashmap
+        this.weatherstationById.putAll(data);               //Adds all received data to existing HashMap
         amountOfData++;
 
         if(amountOfData >= 800) {
@@ -115,19 +108,9 @@ public class MergeData implements Runnable {
         }
     }
 
-
-//    }
-
-//    public void printIt(){
-//            HashMap<Integer, Weatherstation> copyPasteWeatherStations = weatherstationById;
-//            ArrayList<Weatherstation> copyPasteWeatherStationsList = new ArrayList<Weatherstation>(copyPasteWeatherStations.values());
-//            String data = new Gson().toJson(copyPasteWeatherStationsList);
-//            System.out.println("Current data: "+data);
-//    }
-
     /**
-     * Method for getting the HashMap tempData
-     * @return Hashmap of the temporary data where the merger has to work with
+     * Getter for the tempData field.
+     * @return HashMap of the temporary data where the merger has to work with
      */
     public ConcurrentHashMap<Integer, Weatherstation> getTempData() {
         return this.tempData;
@@ -135,11 +118,12 @@ public class MergeData implements Runnable {
 
     /**
      * Method for making a final JSON file which need to be send to the Virtual Machine
+     * @param dataOut ??? TODO wat is dataOut precies?
      */
     public synchronized void writeToJsonFIle(ConcurrentHashMap dataOut) {
 
-        try {
-            System.out.println("Writing to file: ding" + 100000 + fileNumber + ".json");
+        try { //TODO paar comments toevoegen wat al deze shit doet
+            System.out.println("Writing to file: ding" + 100000 + fileNumber + ".json"); //TODO is dit printen nog wel nodig
             PrintWriter writer = new PrintWriter("File" + 100000 + fileNumber + ".json", "UTF-8");
             System.out.println("Size: " + dataOut.size());
             String data = new Gson().toJson(dataOut);
@@ -150,6 +134,5 @@ public class MergeData implements Runnable {
         } catch (FileNotFoundException | UnsupportedEncodingException e) {
             System.out.println(e);
         }
-
     }
 }
