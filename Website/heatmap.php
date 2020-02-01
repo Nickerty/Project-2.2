@@ -27,8 +27,8 @@ function getLocation($stn, $dataRow) {
         }
     }
 }
-
-function getOneOfTheLastReadings($files, $number) {
+function getLast12Readings($files) {
+    $all_json = [];
     $json_counter = 0;
     $usedFiles = [];
     $max = 12;
@@ -42,15 +42,15 @@ function getOneOfTheLastReadings($files, $number) {
         }
         $i++;
     }
-        $file_content = file_get_contents("./json/".$usedFiles[$number]);
-        unset($usedFiles);
+    foreach ($usedFiles as $file) {
+        $file_content = file_get_contents("./json/".$file);
         $file_json_content = json_decode($file_content, true);
-        unset($file_content);
-        $json[$json_counter] = $file_json_content;
-        unset($file_json_content);
-    return $json;
+        $all_json[$json_counter] = $file_json_content;
+        $json_counter++;
+    }
+    return $all_json;
 }
-var_dump(getOneOfTheLastReadings($files, 10)[0][262150]);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
