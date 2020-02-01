@@ -19,12 +19,22 @@ function compare_temp($a, $b)
 
 usort($array_data, 'compare_temp');
 $array_data = array_slice($array_data, 0, 10);
-foreach ($array_data as $data) {
-    echo "
+
+
+if (sizeof($array_data) > 0) {
+    foreach ($array_data as $data) {
+        echo "
                                                     <tr>
                                                         <th>" . $data['stn'] . "</th>
                                                         <td>" . $data['temp'] . "</td>
                                                     </tr>
                                                      ";
+    }
+} else {
+    echo "                                                <tr>
+                                                    <th>Data is currently loading, please wait</th>
+                                                    <td>...</td>
+                                                </tr>
+                                                 ";
 }
 ?>

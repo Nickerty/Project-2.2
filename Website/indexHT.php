@@ -223,7 +223,7 @@ include './assets/js/php/top10CaribbeanSea.php';
                 <div class="col-xl-6">
                     <div class="card messages">
                         <div class="card-body">
-                            <h4 class="mt-0 header-title mb-4">Top-10 temp per day</h4>
+                            <h4 class="mt-0 header-title mb-4">Top-10 temp per 10 seconds</h4>
                             <div class="table-rep-plugin">
                                 <div class="table-responsive mb-0" data-pattern="priority-columns">
                                     <table id="tech-companies-1" class="table table-striped">
@@ -240,7 +240,7 @@ include './assets/js/php/top10CaribbeanSea.php';
                                             var auto_refresh = setInterval(
                                                 (function () {
                                                     $("#data-temp").load("./assets/js/php/loadTemp.php"); //Load the content into the div
-                                                }), 10000);
+                                                }), 1000);
                                         </script>
                                         </tbody>
                                     </table>
@@ -258,7 +258,7 @@ include './assets/js/php/top10CaribbeanSea.php';
                 <div class="col-xl-6">
                     <div class="card messages">
                         <div class="card-body">
-                            <h4 class="mt-0 header-title mb-4">Top-10 rain per day</h4>
+                            <h4 class="mt-0 header-title mb-4">Top-10 rain per 10 seconds</h4>
                             <div class="table-rep-plugin">
                                 <div class="table-responsive mb-0" data-pattern="priority-columns">
                                     <table id="tech-companies-1" class="table table-striped">
@@ -275,7 +275,7 @@ include './assets/js/php/top10CaribbeanSea.php';
                                             var auto_refresh = setInterval(
                                                 (function () {
                                                     $("#data-rain").load("./assets/js/php/loadRain.php"); //Load the content into the div
-                                                }), 10000);
+                                                }), 1000);
                                         </script>
                                         </tbody>
                                     </table>
