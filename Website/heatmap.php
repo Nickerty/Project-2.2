@@ -43,11 +43,14 @@ function getOneOfTheLastReadings($files, $number) {
         $i++;
     }
         $file_content = file_get_contents("./json/".$usedFiles[$number]);
+        unset($usedFiles);
         $file_json_content = json_decode($file_content, true);
+        unset($file_content);
         $json[$json_counter] = $file_json_content;
+        unset($file_json_content);
     return $json;
 }
-
+var_dump(getOneOfTheLastReadings($files, 10)[0][262150]);
 ?>
 <!DOCTYPE html>
 <html lang="en">
