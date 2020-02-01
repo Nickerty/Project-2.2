@@ -1,6 +1,6 @@
 <?php
-include './assets/js/php/tableTempGulf.php';
-include './assets/js/php/top10CaribbeanSea.php';
+include 'tableTempGulf.php';
+include 'top10CaribbeanSea.php';
 $array_data = [];
 foreach ($decodedCaribbean as $single) {
     $stn = $single["stn"];
