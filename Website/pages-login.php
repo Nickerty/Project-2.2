@@ -1,3 +1,13 @@
+<?php
+if(isset($_POST['username'])) {
+    if($_POST['username'] == "admin" && $_POST['userpassword'] == "test") {
+        session_start();
+        $_SESSION['login'] = true;
+        header("Location: http://localhost/Project-2.2/Website/index.php");
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,7 +24,7 @@
 
     <body class="bg-primary">
         <div class="home-btn d-none d-sm-block">
-            <a href="index.html" class="text-white"><i class="fas fa-home h2"></i></a>
+            <a href="index.php" class="text-white"><i class="fas fa-home h2"></i></a>
         </div>
 
         <div class="account-pages my-5 pt-5">
@@ -25,7 +35,7 @@
                             <div class="card-body">
                                 <div class="text-center mt-4">
                                     <div class="mb-3">
-                                        <a href="index.html" class="logo"><img src="assets/images/logo-dark.png" height="120" alt="logo"></a>
+                                        <a href="index.php" class="logo"><img src="assets/images/logo-dark.png" height="120" alt="logo"></a>
                                     </div>
                                 </div>
                                 <div class="float-right d-none d-md-block">
@@ -34,32 +44,27 @@
                                             <i class="fas fa-cog"></i> Language
                                         </button>
                                         <div class="dropdown-menu dropdown-menu-right">
-                                            <a class="dropdown-item" href="pages-login.html">ENG</a>
-                                            <a class="dropdown-item" href="pages-loginNL.html">NL</a>
-                                            <a class="dropdown-item" href="pages-loginHT.html">HT</a>
+                                            <a class="dropdown-item" href="pages-login.php">ENG</a>
+                                            <a class="dropdown-item" href="pages-loginNL.php">NL</a>
+                                            <a class="dropdown-item" href="pages-loginHT.php">HT</a>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="p-3"> 
                                     <h4 class="font-18 text-center">Welcome!</h4>
                                     <p class="text-muted text-center mb-4">Sign in to see your dashboard</p>
-                                    <form class="form-horizontal" action="index.html">
+                                    <form class="form-horizontal" action="" method="post">
                 
                                         <div class="form-group">
                                             <label for="username">Username</label>
-                                            <input type="text" class="form-control" id="username" placeholder="Enter username">
+                                            <input type="text" class="form-control" name="username" placeholder="Enter username">
                                         </div>
                 
                                         <div class="form-group">
                                             <label for="userpassword">Password</label>
-                                            <input type="password" class="form-control" id="userpassword" placeholder="Enter password">
+                                            <input type="password" class="form-control" name="userpassword" placeholder="Enter password">
                                         </div>
-                
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="customControlInline">
-                                            <label class="custom-control-label" for="customControlInline">Remember me</label>
-                                        </div>
-                                        
+
                                         <div class="mt-3">
                                             <button class="btn btn-primary btn-block waves-effect waves-light" type="submit">Log In</button>
                                         </div>

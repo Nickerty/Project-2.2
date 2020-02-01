@@ -1,4 +1,5 @@
 <?php
+include "checklogin.php";
 ini_set('memory_limit', '2G');
 include './assets/js/php/tableTempGulf.php';
 include './assets/js/php/top10CaribbeanSea.php';

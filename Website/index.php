@@ -1,7 +1,13 @@
 <?php
+include "checklogin.php";
+?>
+
+<?php
+
 include './assets/js/php/tableTempGulf.php';
 include './assets/js/php/top10CaribbeanSea.php';
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -28,7 +34,7 @@ include './assets/js/php/top10CaribbeanSea.php';
 
         <!-- LOGO -->
         <div class="topbar-left">
-            <a href="index.html" class="logo">
+            <a href="index.php" class="logo">
                         <span class="logo-light">
                             <img src="assets/images/logo-light.png" alt="" height="60">
                         </span>
@@ -62,9 +68,15 @@ include './assets/js/php/top10CaribbeanSea.php';
                 <ul class="metismenu" id="side-menu">
                     <li class="menu-title">Settings</li>
                     <li>
-                        <a href="index.html" class="waves-effect">
-                            <i class="fas fa-chart-line"></i><span class="badge badge-success badge-pill float-right">Start</span>
+                        <a href="index.php" class="waves-effect">
+                            <i class="fas fa-chart-line"></i>
                             <span> Dashboard </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="logout.php" class="waves-effect">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span> Logout </span>
                         </a>
                     </li>
                 </ul>
@@ -104,9 +116,9 @@ include './assets/js/php/top10CaribbeanSea.php';
                                         <i class="fas fa-cog"></i> Settings
                                     </button>
                                     <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="indexHT.html">HT</a>
-                                        <a class="dropdown-item" href="indexNL.html">NL</a>
-                                        <a class="dropdown-item" href="index.html">ENG</a>
+                                        <a class="dropdown-item" href="indexHT.php">HT</a>
+                                        <a class="dropdown-item" href="indexNL.php">NL</a>
+                                        <a class="dropdown-item" href="index.php">ENG</a>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="#">°F</a>
                                         <a class="dropdown-item" href="#">°C</a>
