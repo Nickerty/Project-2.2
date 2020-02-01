@@ -1,4 +1,6 @@
 <?php
+include "checklogin.php";
+ini_set('memory_limit', '2G');
 include './assets/js/php/tableTempGulf.php';
 include './assets/js/php/top10CaribbeanSea.php';
 $data = file_get_contents("./json/gulfMexico.json");
@@ -25,6 +27,29 @@ function getLocation($stn, $dataRow) {
             return [$singleRow["latiude"], $singleRow["longitude"]];
         }
     }
+}
+function getLast12Readings($files) {
+    $all_json = [];
+    $json_counter = 0;
+    $usedFiles = [];
+    $max = 12;
+    $i = 0;
+    $counter = 0;
+    $amountOfFiles = sizeof($files);
+    while (($counter < $max) && ($i < $amountOfFiles)){
+        if (strpos($files[$i], 'File') !== false) {
+            $usedFiles[$counter] = $files[$i];
+            $counter++;
+        }
+        $i++;
+    }
+    foreach ($usedFiles as $file) {
+        $file_content = file_get_contents("./json/".$file);
+        $file_json_content = json_decode($file_content, true);
+        $all_json[$json_counter] = $file_json_content;
+        $json_counter++;
+    }
+    return $all_json;
 }
 
 ?>
@@ -101,7 +126,6 @@ echo "
         var animate = function() {";
             foreach ($weatherStations as $weatherStation) {
                     echo "heatmapLayer.addData({lat: " . getLocation($weatherStation["stn"], $dataRow)[0] . ", lng: " . getLocation($weatherStation["stn"], $dataRow)[1] . ", count: " . intval(getTemperature2($weatherStation["stn"], $decodedTotal)) . "});\n";
-                    echo "console.log('oef'); \n";
             }
             echo "};
 
