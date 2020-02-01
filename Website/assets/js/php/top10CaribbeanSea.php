@@ -1,5 +1,5 @@
 <?php
-$dataCaribbean = file_get_contents("./json/Caribbean.json");
+$dataCaribbean = file_get_contents("C:/xampp/htdocs/Project-2.2/Website/json/Caribbean.json");
 $decodedCaribbean = json_decode($dataCaribbean, true);
 
 
