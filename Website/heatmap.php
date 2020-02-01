@@ -1,4 +1,5 @@
 <?php
+ini_set('memory_limit', '2G');
 include './assets/js/php/tableTempGulf.php';
 include './assets/js/php/top10CaribbeanSea.php';
 $data = file_get_contents("./json/gulfMexico.json");
@@ -25,6 +26,26 @@ function getLocation($stn, $dataRow) {
             return [$singleRow["latiude"], $singleRow["longitude"]];
         }
     }
+}
+
+function getOneOfTheLastReadings($files, $number) {
+    $json_counter = 0;
+    $usedFiles = [];
+    $max = 12;
+    $i = 0;
+    $counter = 0;
+    $amountOfFiles = sizeof($files);
+    while (($counter < $max) && ($i < $amountOfFiles)){
+        if (strpos($files[$i], 'File') !== false) {
+            $usedFiles[$counter] = $files[$i];
+            $counter++;
+        }
+        $i++;
+    }
+        $file_content = file_get_contents("./json/".$usedFiles[$number]);
+        $file_json_content = json_decode($file_content, true);
+        $json[$json_counter] = $file_json_content;
+    return $json;
 }
 
 ?>
