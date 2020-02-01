@@ -3,7 +3,7 @@ if(isset($_POST['username'])) {
     if($_POST['username'] == "admin" && $_POST['userpassword'] == "test") {
         session_start();
         $_SESSION['login'] = true;
-        header("Location: http://localhost/Project-2.2/Website/index.php");
+        header("Location: /indexNL.php");
     }
 }
 ?>

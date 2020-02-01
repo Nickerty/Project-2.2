@@ -1,5 +1,4 @@
 <?php
-include 'tableTempGulf.php';
 include 'top10CaribbeanSea.php';
 $array_data = [];
 foreach ($decodedCaribbean as $single) {
@@ -16,7 +15,6 @@ function compare_rain($a, $b)
 {
     return strnatcmp($b['rain'], $a['rain']);
 }
-
 usort($array_data, 'compare_rain');
 $array_data = array_slice($array_data, 0, 10);
 foreach ($array_data as $data) {

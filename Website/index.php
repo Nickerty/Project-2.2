@@ -17,7 +17,7 @@ include './assets/js/php/top10CaribbeanSea.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
     <title>TITEL</title>
     <!-- jvectormap -->
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
     <link href="plugins/jvectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet">
     <link href="assets/css/metismenu.min.css" rel="stylesheet" type="text/css">
     <link href="assets/css/style.css" rel="stylesheet" type="text/css">
@@ -241,6 +241,7 @@ include './assets/js/php/top10CaribbeanSea.php';
                                             $("#data-rain").load("./assets/js/php/loadRain.php");
                                             var auto_refresh = setInterval(
                                                 (function () {
+                                                    console.log("oef");
                                                     $("#data-rain").load("./assets/js/php/loadRain.php"); //Load the content into the div
                                                 }), 10000);
                                         </script>
