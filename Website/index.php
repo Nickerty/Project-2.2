@@ -108,6 +108,7 @@ include './assets/js/php/top10CaribbeanSea.php';
                                 <li class="breadcrumb-item active">Dash</li>
                             </ol>
                         </div>
+                        <!-- Dropdown menu for choosing languages -->
                         <div class="col-sm-6">
                             <div class="float-right d-none d-md-block">
                                 <div class="dropdown">
@@ -120,12 +121,10 @@ include './assets/js/php/top10CaribbeanSea.php';
                                         <a class="dropdown-item" href="indexHT.php">HT</a>
                                         <a class="dropdown-item" href="indexNL.php">NL</a>
                                         <a class="dropdown-item" href="index.php">ENG</a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#">°F</a>
-                                        <a class="dropdown-item" href="#">°C</a>
                                     </div>
                                 </div>
                             </div>
+                            <!-- export data button -->
                             <div class="col-sm">
                                 <div class="float-right d-none d-md-block">
                                     <div class="button-items">
@@ -201,7 +200,7 @@ include './assets/js/php/top10CaribbeanSea.php';
                                         </tr>
                                         </thead>
                                         <tbody id="data-temp">
-
+                                        <!-- update top 10 temperatures-->
                                         <script>
                                             $("#data-temp").load("./assets/js/php/loadTemp.php");
                                             var auto_refresh = setInterval(
@@ -236,7 +235,7 @@ include './assets/js/php/top10CaribbeanSea.php';
                                         </tr>
                                         </thead>
                                         <tbody id="data-rain">
-
+                                        <!-- update top 10 rainfall -->
                                         <script>
                                             $("#data-rain").load("./assets/js/php/loadRain.php");
                                             var auto_refresh = setInterval(
