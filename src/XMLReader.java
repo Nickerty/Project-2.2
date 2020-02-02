@@ -28,6 +28,7 @@ public class XMLReader implements Runnable {
     private MergeData mergeData;
     public static final String UTF8_BOM = "\uFEFF";
     private volatile boolean running = true;
+
     /**
      * Constructor for the XMLReader class
      * @param mergeData Instance of the class MergeData
@@ -66,28 +67,15 @@ public class XMLReader implements Runnable {
                         line = bufferedReader.readLine();
                     }
                 } catch (NullPointerException NE) {
-//                    System.out.println("oef");
                 }
                 String finalString = stringBuilder.toString();
                 InputSource saxInputSource = new InputSource(new StringReader(finalString));
                 try {
                     saxParser.parse(saxInputSource, saxHandler);
                 } catch (SAXParseException saxException) {
-//                    System.out.println(finalString);
-//                    System.out.println(saxException);
                 }
-                stringBuilder = new StringBuilder();
+                stringBuilder = new StringBuilder(); //TODO wtf is dit hier? Kan dit niet weg?
             }
-
-            //
-//                System.out.println(stringBuilder);
-//                saxParser.parse(data, saxHandler);
-//
-//                List<Weatherstation> weatherstations = saxHandler.getWeatherstations();
-//                for(Weatherstation weatherstation : weatherstations)
-//                {
-//                    System.out.println("Weatherstation Id = " + weatherstation.getStn());
-//                }
         }
         catch(Exception ex)
         {
@@ -96,18 +84,18 @@ public class XMLReader implements Runnable {
     }
 
     /**
-     * Method for adding data to the Inputstream variable: data
+     * Method for overwriting the data field with the given InputStream variable
+     * @param input an InputStream which will be used to overwrite the data field
      */
     public void addData(InputStream input) {
         this.data = input;
     }
 
+    /**
+     * Simple method which sets the running field boolean to false
+     */
     public void stopRunning()
     {
         running = false;
     }
-
-
-
-
 }

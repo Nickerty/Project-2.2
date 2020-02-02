@@ -6,8 +6,8 @@ import java.util.*;
  * than 20% of the average value.
  *
  * @author Nick Scholma
- * @version 1.1
- * @since 23-1-2020
+ * @version 1.2
+ * @since 1-2-2020
  */
 public class DataCorrection {
 
@@ -16,14 +16,13 @@ public class DataCorrection {
      * Simple constructor for the class
      */
     public DataCorrection() {
-
     }
 
     /**
      * The main method for this class; the correction method takes the weather data and extrapolates any missing values,
      * based on the average of the previous/next 30 values. This may be used on any set of weather data.
      *
-     * @param weatherData an arraylist of Doubles that will be used to extrapolated a value
+     * @param weatherData an ArrayList of Doubles that will be used to extrapolated a value
      * @return returns an extrapolated value based on the given ArrayList
      */
     public Double correctTheData(ArrayList<Double> weatherData) {
@@ -48,54 +47,22 @@ public class DataCorrection {
      */
     public Double correctTemperature(ArrayList<Double> temps, Double tempToCheck) {
         Double sum = 0.0;
-        for (int i = 0; i < temps.size(); i++) {
-            sum += temps.get(i);
-        } //a sum is made of the first 30 values in the given range, which is why you should strive to give this method lists that contain exactly 30 values
-        Double avg = sum / temps.size(); //simple calculation to get the average value of the 30 values given
-        //System.out.println("The current avg is : " + avg);
+        for (Double temp : temps) {
+            sum += temp;
+        } //a sum is made of all temperature values in the given ArrayList
+        Double avg = sum / temps.size(); //simple calculation to get the average value of the values given
         Double maxTemp = (avg + (0.2 * avg)); //sets the max tolerable temperature
         Double minTemp = avg - (0.2 * avg); //sets the minimal tolerable temperature
-        if (avg < 0) {
+        if (avg < 0) { //if the avg value is below 0 (which is very realistic as we are working with Celsius)
             Double temTemp = maxTemp;
             maxTemp = minTemp;
-            minTemp = temTemp;
+            minTemp = temTemp; //then the max and min tolerable values are swapped, seeing as e.g. -5 is smaller than -2
         }
         if (tempToCheck > maxTemp) { //if the checked temperature is greater than the max tolerable temp:
-            //System.out.println("HIGH DEVIANT JESUS CHRIST. CORRECTING " + tempToCheck + " INTO " + maxTemp);
             tempToCheck = maxTemp; //then the temperature is a deviant, and will be corrected to the maximum tolerable value.
         } else if (tempToCheck < minTemp) { //same steps as for maxTemp, but applied to minTemp
-            //System.out.println("LOW DEVIANT JESUS CHRIST. CORRECTING " + tempToCheck + " INTO " + minTemp);
             tempToCheck = minTemp; //the deviant value is set to the minimal tolerable value
         }
         return Math.round(tempToCheck * 10) / 10.0; //the checked temperature is returned, possibly corrected
     }
-
-
-    /**
-     * Simple method that generates an array of Integers that contain some null values, that we use to test the correctTheData method with
-     *
-     * @return returns the list
-     */
-//    private ArrayList<Double> testData() {
-//        for (Double i = 1.00; i < 91.00; i++) {
-//            weatherData.add(i);
-//        } //makes a list of 90 values, ranging from 1 to 90
-//        weatherData.set(6, null);
-//        weatherData.set(9, null);
-//        weatherData.set(55, null);
-//        weatherData.set(57, null); //substitutes some values with null's
-//    }
-
-    /**
-     * Simple method that generates test values to test the temperature corrector with
-     *
-     * @return returns an ArrayList containing Doubles 1.00 trough 30.00, of which the average value will be 15.00.
-     */
-//    private ArrayList<Double> makeTestTemps() {
-//        ArrayList<Double> testTemps = new ArrayList<>();
-//        for (Double i = 1.00; i < 31.00; i++) {
-//            testTemps.add(i);
-//        }
-//        return testTemps;
-//    }
 }

@@ -1,7 +1,3 @@
-
-
-import java.lang.reflect.*;
-import java.nio.file.*;
 import java.util.*;
 
 /**
@@ -18,7 +14,7 @@ public class Weatherstation {
 
     /**
      * Constructor for the Weatherstation class
-     * @param stn Unique identifier. This is needed for later identification
+     * @param stn Station Numer, a unique identifier. This is needed for later identification
      */
     public Weatherstation(int stn) {
         this.stn = stn;
@@ -34,47 +30,32 @@ public class Weatherstation {
 
     /**
      * Setter for the stn field
-     * @param stn Unique identifier, needed for later identification of the weatherstation
+     * @param stn Unique identifier, needed for later identification of the weather station
      */
     public void setStn(int stn) {
         this.stn = stn;
     }
 
     /**
-     * Method for adding weathermeasurements to this station
-     * @param item One weathermeasurement
+     * Method for adding instances of WeatherMeasurements to this station
+     * @param item One weatherMeasurement, which will be added to the weatherMeasurements field
      */
     public void addWeatherMeasurement(WeatherMeasurement item) {
         weatherMeasurements.add(item);
     }
 
     /**
-     * Getter for all known weathermeasurements
-     * @return all known weathermeasurements in form of an ArrayList
+     * Getter for all known WeatherMeasurements
+     * @return all known WeatherMeasurements in form of an ArrayList
      */
     public ArrayList<WeatherMeasurement> getWeatherMeasurements() {
-//        System.out.println(weatherMeasurements.size());
         return weatherMeasurements;
     }
 
+    /**
+     * Method which removes the oldest (and this first) value from the weatherMeasurements field
+     */
     public void removeOldestValue(){
         weatherMeasurements.remove(0);
     }
-
-    /**
-     * Getter for a specific number of measurements
-     * @param aantal Used to tell the method how many values it must return
-     * @return Depending on the "aantal" variable, the amount of values requested in form of an ArrayList
-     */
-//    public ArrayList<WeatherMeasurement> getSpecificNumberOfWeatherMeasurements(int aantal) {
-//        ArrayList<WeatherMeasurement> returnthis = new ArrayList<WeatherMeasurement>();
-//        if(weatherMeasurements.size()<aantal){
-//            returnthis = weatherMeasurements;
-//        }
-//        else{
-//            List<WeatherMeasurement> thirtyValues = weatherMeasurements.subList(0, 30);
-//            returnthis.addAll(thirtyValues);
-//        }
-//        return returnthis;
-//    }
 }
