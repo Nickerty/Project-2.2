@@ -10,7 +10,7 @@ import java.util.concurrent.*;
  * The merging itself is handled by a single thread which will copy the data, remove the old, and then merge it.
  *
  * @author Matthijs van der Wal, Anne de Graaff
- * @version 1.1
+ * @version 1.0
  * @since 24-1-2020
  */
 
@@ -76,6 +76,13 @@ public class MergeData implements Runnable {
                 }
 
                 if (delayCounter >= 10) {
+                    int counter = 0;
+                    for (Weatherstation weatherstation : dataOut.values()) {
+                        for (WeatherMeasurement weatherMeasurement : weatherstation.getWeatherMeasurements()) {
+                            counter += 1;
+                        }
+                    }
+                    System.out.println(counter); //TODO: is deze print nodig/handig?
                     writeToJsonFIle(dataOut);
                     this.tempData.clear();
                     dataOut.clear();
@@ -102,13 +109,23 @@ public class MergeData implements Runnable {
     }
 
     /**
+     * Getter for the tempData field.
+     * @return HashMap of the temporary data where the merger has to work with
+     */
+    public ConcurrentHashMap<Integer, Weatherstation> getTempData() {
+        return this.tempData;
+    }
+
+    /**
      * Method for making a final JSON file which need to be send to the Virtual Machine
-     * @param dataOut Variable for the data which will be exported as a JSON file.
+     * @param dataOut ??? TODO wat is dataOut precies?
      */
     public synchronized void writeToJsonFIle(ConcurrentHashMap dataOut) {
 
-        try {
+        try { //TODO paar comments toevoegen wat al deze shit doet
+            System.out.println("Writing to file: ding" + 100000 + fileNumber + ".json"); //TODO is dit printen nog wel nodig
             PrintWriter writer = new PrintWriter("File" + 100000 + fileNumber + ".json", "UTF-8");
+            System.out.println("Size: " + dataOut.size());
             String data = new Gson().toJson(dataOut);
             writer.println(data);
             writer.close();

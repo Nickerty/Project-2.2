@@ -13,14 +13,15 @@ foreach ($weatherStations as $weatherStation) {
     array_push($stn_from_weatherStations, $weatherStation["stn"]);
 }
 
-$mapWidth = 1294;
-$mapHeight = 700;
 
-$mapLonLeft = -106.569866;
-$mapLonRight = -73.232942;
+$mapWidth = 679;
+$mapHeight = 560;
+
+$mapLonLeft = -99.339107;
+$mapLonRight = -80.519324;
 $mapLonDelta = $mapLonRight - $mapLonLeft;
 
-$mapLatBottom = 12.920548;
+$mapLatBottom = 16.527729;
 $mapLatBottomDegree = $mapLatBottom * M_PI / 180;
 
 function convertGeoToPixel($lat, $lon)
@@ -35,6 +36,7 @@ function convertGeoToPixel($lat, $lon)
     $y = $mapHeight - (($worldMapWidth / 2 * log((1 + sin($lat)) / (1 - sin($lat)))) - $mapOffsetY);
     return array($x, $y);
 }
+echo "x: ".$position[0]." / ".$position[1];
 
 function getTemperature2($stn, $jsonFile) {
     $jsonFileNeeded = $jsonFile["weatherMeasurements"];
@@ -91,7 +93,7 @@ function getLast12Readings($files, $locationFile, $stn_from_weatherStations) {
             }
 
         }
-        $all_json[$json_counter] = ["max"=>15, "min" =>5, "data"=>$json_dingen];
+        $all_json[$json_counter] = ["max"=>35, "min" =>-10, "data"=>$json_dingen];
         $json_counter++;
 
     }
@@ -325,21 +327,7 @@ $animationData= json_encode($animationData);
 
       var heatmapInstance = h337.create({
         container: document.querySelector('.heatmap'),
-          radius: 120,
-          blur: 0,
-          opacity: .5,
-          gradient: {
-            '.1': '#0059b3',
-            '.2': '#0073e6',
-            '.3': '#4da6ff',
-            '.4': '#99ccff',
-            '.5': '#ffcc66',
-            '.6': '#ffbb33',
-            '.7': '#ff9900',
-            '.9': '#ff5c33',
-            '.95': '#ff3300'
-          }
-
+          radius: 120
       });
       var animationData;
         console.log(animationData);
