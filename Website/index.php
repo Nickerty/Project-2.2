@@ -126,6 +126,7 @@ include './assets/js/php/top10CaribbeanSea.php';
                                     </div>
                                 </div>
                             </div>
+
                             <div class="col-sm">
                                 <div class="float-right d-none d-md-block">
                                     <div class="button-items">
