@@ -10,7 +10,7 @@ import java.util.*;
  */
 public class Weatherstation {
     int stn;
-    ArrayList<WeatherMeasurement> weatherMeasurements = new ArrayList<>();
+    private ArrayList<WeatherMeasurement> weatherMeasurements = new ArrayList<>();
 
     /**
      * Constructor for the Weatherstation class
