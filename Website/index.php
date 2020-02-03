@@ -23,6 +23,7 @@ include './assets/js/php/top10CaribbeanSea.php';
     <link href="assets/css/style.css" rel="stylesheet" type="text/css">
     <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <script src="https://kit.fontawesome.com/a6dd52fde2.js" crossorigin="anonymous"></script>
+
 </head>
 
 <body>
@@ -91,7 +92,6 @@ include './assets/js/php/top10CaribbeanSea.php';
 
     </div>
     <!-- Left Sidebar End -->
-
     <!-- ============================================================== -->
     <!-- Start right Content here -->
     <!-- ============================================================== -->
@@ -128,7 +128,7 @@ include './assets/js/php/top10CaribbeanSea.php';
                             <div class="col-sm">
                                 <div class="float-right d-none d-md-block">
                                     <div class="button-items">
-                                        <button class="btn btn-primary" type="button" id="export_button" data-toggle="button"
+                                        <button class="btn btn-primary" type="button" onclick="location.href = 'downloadxml.html';" id="export_button" data-toggle="button"
                                                 style="margin-top: 0;">
                                             <i class="fas"></i> Export Data
                                         </button>
