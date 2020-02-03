@@ -1,4 +1,3 @@
-<!-- Checks if the given input are the right credentials to login and redirect you to de weather dashboard -->
 <?php
 if(isset($_POST['username'])) {
     if($_POST['username'] == "admin" && $_POST['userpassword'] == "test") {
@@ -16,7 +15,7 @@ if(isset($_POST['username'])) {
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-        <title>Login</title>
+        <title>AAAAAAAHHH</title>
 
         <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
         <link href="assets/css/metismenu.min.css" rel="stylesheet" type="text/css">
@@ -39,7 +38,6 @@ if(isset($_POST['username'])) {
                                         <a href="index.php" class="logo"><img src="assets/images/logo-dark.png" height="120" alt="logo"></a>
                                     </div>
                                 </div>
-                                <!-- Dropdown menu for choosing languages -->
                                 <div class="float-right d-none d-md-block">
                                     <div class="dropdown">
                                         <button class="btn btn-primary dropdown-toggle arrow-none waves-effect waves-light" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -52,7 +50,6 @@ if(isset($_POST['username'])) {
                                         </div>
                                     </div>
                                 </div>
-                                <!-- Username and password input -->
                                 <div class="p-3"> 
                                     <h4 class="font-18 text-center">Welcome!</h4>
                                     <p class="text-muted text-center mb-4">Sign in to see your dashboard</p>
