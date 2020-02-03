@@ -26,11 +26,10 @@ import org.xml.sax.SAXParseException;
 public class XMLReader implements Runnable {
     private InputStream data;
     private MergeData mergeData;
-    public static final String UTF8_BOM = "\uFEFF";
-    private volatile boolean running = true;
 
     /**
      * Constructor for the XMLReader class
+     *
      * @param mergeData Instance of the class MergeData
      */
     public XMLReader(MergeData mergeData) {
@@ -42,14 +41,12 @@ public class XMLReader implements Runnable {
      */
     @Override
     public void run() {
-        try
-        {
+        try {
             SAXParserFactory factory = SAXParserFactory.newInstance();
             SAXParser saxParser = factory.newSAXParser();
             SAXHandler saxHandler = new SAXHandler(mergeData);
-            while(running) {
-                String rowLines = null;
-                String line = null;
+            while (true) {
+                String line;
                 StringBuilder stringBuilder = new StringBuilder();
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(data, "UTF-8"));
                 try {
@@ -67,35 +64,27 @@ public class XMLReader implements Runnable {
                         line = bufferedReader.readLine();
                     }
                 } catch (NullPointerException NE) {
+                    System.out.println("Application was not able to read the incoming file: "+NE);
                 }
                 String finalString = stringBuilder.toString();
                 InputSource saxInputSource = new InputSource(new StringReader(finalString));
                 try {
                     saxParser.parse(saxInputSource, saxHandler);
                 } catch (SAXParseException saxException) {
+                    System.out.println("Parsing failed: "+saxException);
                 }
-                stringBuilder = new StringBuilder(); //TODO wtf is dit hier? Kan dit niet weg?
             }
-        }
-        catch(Exception ex)
-        {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
     /**
      * Method for overwriting the data field with the given InputStream variable
+     *
      * @param input an InputStream which will be used to overwrite the data field
      */
     public void addData(InputStream input) {
         this.data = input;
-    }
-
-    /**
-     * Simple method which sets the running field boolean to false
-     */
-    public void stopRunning()
-    {
-        running = false;
     }
 }
