@@ -16,6 +16,7 @@ foreach ($weatherStations as $weatherStation) {
 $mapWidth = 1294;
 $mapHeight = 700;
 
+
 $mapLonLeft = -106.569866;
 $mapLonRight = -73.232942;
 $mapLonDelta = $mapLonRight - $mapLonLeft;
