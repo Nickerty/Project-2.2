@@ -178,7 +178,7 @@ include './assets/js/php/top10CaribbeanSea.php';
                     <div class="card">
                         <div class="card-body">
                             <h4 class="mt-0 header-title mb-4">Heatmap</h4>
-                            <iframe src="heatmap.php" width="100%" height="400px" style="border: none"></iframe>
+                            <iframe src="heatmap.php" width="100%" height="600px" style="border: none" scrolling="no"></iframe>
                         </div>
                     </div>
                 </div>
