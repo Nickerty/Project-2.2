@@ -130,7 +130,7 @@ include './assets/js/php/top10CaribbeanSea.php';
                                     <div class="button-items">
                                         <button class="btn btn-primary" id="export_button" type="button" data-toggle="button"
                                                 style="margin-top: 0;">
-                                            <i class="fas"></i> Ekspòtasyon done
+                                            <i class="fas"></i> Ekspòtasyon
                                         </button>
                                     </div>
                                 </div>
