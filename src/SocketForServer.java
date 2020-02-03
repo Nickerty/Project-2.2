@@ -28,7 +28,6 @@ public class SocketForServer {
         int port = 7789;                //Port for connection (server-client)
         ServerSocket server;
         InputStream input;
-        int connection = 0;
         try {
             server = new ServerSocket(port, 800);    //Make new serverSocket
             server.setSoTimeout(1000);
@@ -41,7 +40,6 @@ public class SocketForServer {
                 Socket client;
                 try {
                     client = server.accept();    //Server waiting for an incoming connection
-                    connection++;
                 } catch (SocketTimeoutException e) {
                     client = null;
                 } catch (Exception se) {

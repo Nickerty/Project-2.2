@@ -41,8 +41,8 @@ public class MergeData implements Runnable {
                     ArrayList<WeatherMeasurement> measurementList = new ArrayList<>(dataSingle.getWeatherMeasurements());       //Make list for all Measurements of the selected Weatherstation
 
                     if (measurementList.size() >= 1) {
-                        int maxTillTen = 10;
-                        if (measurementList.size() < 10) {
+                        int maxTillTen = 2;
+                        if (measurementList.size() < 2) {
                             maxTillTen = measurementList.size();
                         }
                         WeatherMeasurement measurementItem = measurementList.get(0);
@@ -75,14 +75,7 @@ public class MergeData implements Runnable {
                     }
                 }
 
-                if (delayCounter >= 10) {
-                    int counter = 0;
-                    for (Weatherstation weatherstation : dataOut.values()) {
-                        for (WeatherMeasurement weatherMeasurement : weatherstation.getWeatherMeasurements()) {
-                            counter += 1;
-                        }
-                    }
-                    System.out.println(counter); //TODO: is deze print nodig/handig?
+                if (delayCounter >= 2) {
                     writeToJsonFIle(dataOut);
                     this.tempData.clear();
                     dataOut.clear();
@@ -109,23 +102,13 @@ public class MergeData implements Runnable {
     }
 
     /**
-     * Getter for the tempData field.
-     * @return HashMap of the temporary data where the merger has to work with
-     */
-    public ConcurrentHashMap<Integer, Weatherstation> getTempData() {
-        return this.tempData;
-    }
-
-    /**
      * Method for making a final JSON file which need to be send to the Virtual Machine
-     * @param dataOut ??? TODO wat is dataOut precies?
+     * @param dataOut Variable to store the data which will be exported as a JSON file
      */
     public synchronized void writeToJsonFIle(ConcurrentHashMap dataOut) {
 
-        try { //TODO paar comments toevoegen wat al deze shit doet
-            System.out.println("Writing to file: ding" + 100000 + fileNumber + ".json"); //TODO is dit printen nog wel nodig
-            PrintWriter writer = new PrintWriter("File" + 100000 + fileNumber + ".json", "UTF-8");
-            System.out.println("Size: " + dataOut.size());
+        try {
+            PrintWriter writer = new PrintWriter("File" + 100000 + fileNumber + ".json", "UTF-8");  //This creates a JSON file
             String data = new Gson().toJson(dataOut);
             writer.println(data);
             writer.close();

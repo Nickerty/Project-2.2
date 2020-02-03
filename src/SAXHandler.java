@@ -26,6 +26,7 @@ public class SAXHandler extends DefaultHandler {
 
     /**
      * Constructor for the SAXHandler class
+     *
      * @param mergeData Instance of the class MergeData which is run by the thread: merger.
      */
     public SAXHandler(MergeData mergeData) {
@@ -34,6 +35,7 @@ public class SAXHandler extends DefaultHandler {
 
     /**
      * Method which initialises the correctData field as an empty ArrayList
+     *
      * @throws SAXException An exception indicating that an error has occurred during the SAX parsing process
      */
     @Override
@@ -43,6 +45,7 @@ public class SAXHandler extends DefaultHandler {
 
     /**
      * Method which merges all the data into one JSON file.
+     *
      * @throws SAXException An exception indicating that an error has occurred during the SAX parsing process
      */
     @Override
@@ -52,9 +55,10 @@ public class SAXHandler extends DefaultHandler {
 
     /**
      * Method which defines the element in the XML document where the SAX handler will begin to parse.
-     * @param uri Universal resource identifier
-     * @param localname Local name
-     * @param qName Qualified name
+     *
+     * @param uri        Universal resource identifier
+     * @param localname  Local name
+     * @param qName      Qualified name
      * @param attributes Attributes attached to the element
      * @throws SAXException An exception indicating that an error has occurred during the SAX parsing process
      */
@@ -65,9 +69,10 @@ public class SAXHandler extends DefaultHandler {
     /**
      * Method which defines the element in the XML document where the SAX handler will end its parsing, and which also
      * runs the DataCorrection methods on the collected data.
-     * @param uri Universal resource identifier
+     *
+     * @param uri       Universal resource identifier
      * @param localName Local name
-     * @param qName Qualified name
+     * @param qName     Qualified name
      */
     @Override
     public void endElement(String uri, String localName, String qName) {
@@ -86,7 +91,7 @@ public class SAXHandler extends DefaultHandler {
                 weatherMeasurement = new WeatherMeasurement();              //Make a new WeatherMeasurement
                 weatherMeasurement.setStn(Integer.valueOf(elementValue));   //Set the Stn variable of the WeatherMeasurement to the corresponding one.
                 allMeasurements = weatherstations.get(stn).getWeatherMeasurements();
-                if(allMeasurements.size()>=30){ //if there are 30 or more measurements
+                if (allMeasurements.size() >= 30) { //if there are 30 or more measurements
                     weatherstations.get(stn).removeOldestValue(); //remove the oldest one, ensuring our list stays at 30 values
                 }
 
@@ -173,8 +178,7 @@ public class SAXHandler extends DefaultHandler {
                     weatherMeasurement.setWindDirection(Double.valueOf(elementValue));       //Set the WindDirection variable of the weatherMeasurement to the corresponding one.
                     correctData.add(true);
                 }
-            }
-            else if (qName.equalsIgnoreCase("MEASUREMENT")) {
+            } else if (qName.equalsIgnoreCase("MEASUREMENT")) {
                 int aantal = 0;
                 for (Boolean correctDataSingle : correctData) { //this loop in combination with the switch within ensure that the data correction methods will run, and only on the missing values
                     switch (aantal) { //In this switch the data correction method is run on values if they are empty
@@ -318,21 +322,14 @@ public class SAXHandler extends DefaultHandler {
 
     /**
      * ????
-     * @param ch List of characters
-     * @param start The start position in the character array
+     *
+     * @param ch     List of characters
+     * @param start  The start position in the character array
      * @param length The number of characters to use from the character array
      * @throws SAXException When something goes wrong during the passing process a SAXException well be thrown
      */
     @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
         elementValue = new String(ch, start, length);
-    }
-
-    /**
-     * Getter for the weatherstations field.
-     * @return a Hashmap containing all known weatherstations, mapped by their ID.
-     */
-    public HashMap<Integer, Weatherstation> getWeatherstations() {
-        return weatherstations;
     }
 }

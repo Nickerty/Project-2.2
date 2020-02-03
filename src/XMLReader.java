@@ -26,7 +26,6 @@ import org.xml.sax.SAXParseException;
 public class XMLReader implements Runnable {
     private InputStream data;
     private MergeData mergeData;
-    public static final String UTF8_BOM = "\uFEFF";
     private volatile boolean running = true;
 
     /**
@@ -74,7 +73,6 @@ public class XMLReader implements Runnable {
                     saxParser.parse(saxInputSource, saxHandler);
                 } catch (SAXParseException saxException) {
                 }
-                stringBuilder = new StringBuilder(); //TODO wtf is dit hier? Kan dit niet weg?
             }
         }
         catch(Exception ex)
