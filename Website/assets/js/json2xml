@@ -1,30 +1,4 @@
-var xml = '<e name="value">text</e>',
-    dom = parseXml(xml),
-    json = xml2json(dom),
-    xml2 = json2xml(eval(json));
 
-function parseXml(xml) {
-    var dom = null;
-    if (window.DOMParser) {
-        try {
-            dom = (new DOMParser()).parseFromString(xml, "text/xml");
-        }
-        catch (e) { dom = null; }
-    }
-    else if (window.ActiveXObject) {
-        try {
-            dom = new ActiveXObject('Microsoft.XMLDOM');
-            dom.async = false;
-            if (!dom.loadXML(xml)) // parse error ..
-
-                window.alert(dom.parseError.reason + dom.parseError.srcText);
-        }
-        catch (e) { dom = null; }
-    }
-    else
-        alert("cannot parse xml string!");
-    return dom;
-}
 
 
 function json2xml(o, tab) {
@@ -65,5 +39,3 @@ function json2xml(o, tab) {
         xml += toXml(o[m], m, "");
     return tab ? xml.replace(/\t/g, tab) : xml.replace(/\t|\n/g, "");
 }
-
-console.log(xml2);

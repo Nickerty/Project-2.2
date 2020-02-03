@@ -145,7 +145,7 @@ include './assets/js/php/top10CaribbeanSea.php';
                             <div class="col-sm">
                                 <div class="float-right d-none d-md-block">
                                     <div class="button-items">
-                                        <button class="btn btn-primary" id="export_button" type="button"
+                                        <button class="btn btn-primary" onclick="location.href = 'downloadxml.html';" id="export_button" type="button"
                                                 data-toggle="button" style="margin-top: 0;">
                                             <i class="fas"></i> Exporteer data
                                         </button>
@@ -192,7 +192,7 @@ include './assets/js/php/top10CaribbeanSea.php';
                     <div class="card">
                         <div class="card-body">
                             <h4 class="mt-0 header-title mb-4">Heatmap</h4>
-                            <iframe src="heatmap.php" width="100%" height="400px" style="border: none"></iframe>
+                            <iframe  scrolling="no" src="heatmap.php" width="100%" height="600px" style="border: none"></iframe>
                         </div>
                     </div>
                 </div>
@@ -221,7 +221,7 @@ include './assets/js/php/top10CaribbeanSea.php';
                                             var auto_refresh = setInterval(
                                                 (function () {
                                                     $("#data-temp").load("./assets/js/php/loadTemp.php"); //Load the content into the div
-                                                }), 1000);
+                                                }), 2000);
                                         </script>
                                         </tbody>
                                     </table>
@@ -256,7 +256,7 @@ include './assets/js/php/top10CaribbeanSea.php';
                                             var auto_refresh = setInterval(
                                                 (function () {
                                                     $("#data-rain").load("./assets/js/php/loadRain.php"); //Load the content into the div
-                                                }), 1000);
+                                                }), 2000);
                                         </script>
                                         </tbody>
                                     </table>
