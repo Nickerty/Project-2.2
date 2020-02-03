@@ -327,12 +327,4 @@ public class SAXHandler extends DefaultHandler {
     public void characters(char[] ch, int start, int length) throws SAXException {
         elementValue = new String(ch, start, length);
     }
-
-    /**
-     * Getter for the weatherstations field.
-     * @return a Hashmap containing all known weatherstations, mapped by their ID.
-     */
-    public HashMap<Integer, Weatherstation> getWeatherstations() {
-        return weatherstations;
-    }
 }
